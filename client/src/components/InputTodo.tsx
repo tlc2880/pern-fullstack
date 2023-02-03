@@ -6,11 +6,12 @@ import Button from "@mui/material/Button";
 
 const InputTodo = () => {
   const [description, setDescription] = useState("");
+  const [owner, setOwner] = useState("Jerry");
 
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     try {
-      const body = { description };
+      const body = { description, owner };
       const response = await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
