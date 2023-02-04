@@ -20,10 +20,10 @@ app.use(function (req, res, next) {
 app.post("/todos", async (req, res) => {
     try {
         const {
-            description, owner, priority
+            description, owner, priority, day
         } = req.body
-        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority) VALUES($1, $2, $3) RETURNING *", 
-        [description, owner, priority])
+        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority, day) VALUES($1, $2, $3, $4) RETURNING *", 
+        [description, owner, priority, day])
         res.json(newTodo.rows[0])
     } catch (error) {
         console.error(error.message)
@@ -61,10 +61,12 @@ app.put("/todos/:id", async (req, res) => {
         } = req.params;
         const {
             description,
+            owner,
+            priority,
             completed
         } = req.body;
         if (description) {
-            const editTodo = await pool.query("UPDATE todo SET description = $1 WHERE todo_id = $2", [description, id])
+            const editTodo = await pool.query("UPDATE todo SET description=$1, owner=$2, priority=$3 WHERE todo_id = $4", [description, owner, priority, id])
         } else if (completed) {
             const completeTodo = await pool.query("UPDATE todo SET completed = $1 WHERE todo_id = $2", [completed, id])
         }
