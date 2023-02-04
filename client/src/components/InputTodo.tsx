@@ -15,17 +15,11 @@ import {
   Grid
 } from '@mui/material';
 
-interface todoType {
-  todo_id: Number,
-  description: string,
-  owner: string,
-  priority: string,
-  completed: boolean
-}
+import todoType from '../types'
 
 const InputTodo = () => {
   const initialValues = {
-    todo_id: 0,
+    todo_id: "",
     description: "",
     owner: "",
     priority: "low",
