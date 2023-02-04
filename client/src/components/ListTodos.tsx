@@ -10,9 +10,14 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
-import todoType from '../types'
 
-interface ToDoContainer extends Array<todoType> {}
+export interface ToDo {
+  todo_id: string;
+  description: string;
+  completed: boolean;
+}
+
+interface ToDoContainer extends Array<ToDo> {}
 
 const ListTodos = () => {
   const [todos, setTodos] = useState<ToDoContainer>([]);
@@ -91,12 +96,6 @@ const ListTodos = () => {
                     }
                   >
                     {todo.description}
-                  </TableCell>
-                  <TableCell>
-                    {todo.owner}
-                  </TableCell>
-                  <TableCell>
-                    {todo.priority}
                   </TableCell>
                   <TableCell>
                     <EditTodo todo={todo} />

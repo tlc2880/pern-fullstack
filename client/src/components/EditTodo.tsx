@@ -10,13 +10,16 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import todoType from '../types'
 
-type EditTodoProps = {
-  todo: todoType;
+interface ToDo {
+  todo: {
+    todo_id: string;
+    description: string;
+    completed: boolean;
+  };
 }
 
-const EditTodo = ( {todo} : EditTodoProps) => {
+const EditTodo = ({ todo }: ToDo) => {
   const [description, setDescription] = useState(todo.description);
   const [open, setOpen] = React.useState(false);
 
