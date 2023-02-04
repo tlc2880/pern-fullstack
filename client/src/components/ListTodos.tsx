@@ -74,6 +74,8 @@ const ListTodos = () => {
         <TableHead>
           <TableRow>
             <TableCell>Description</TableCell>
+            <TableCell>Owner</TableCell>
+            <TableCell>Priority</TableCell>
             <TableCell>Edit</TableCell>
             <TableCell>Delete</TableCell>
             <TableCell>Complete</TableCell>

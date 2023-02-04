@@ -8,13 +8,15 @@ import {
   FormControlLabel,
   TextField,
   Select,
+  MenuItem,
   FormGroup,
   Checkbox,
   Button,
   Box,
-  Grid
+  InputLabel
 } from '@mui/material';
-
+import { Grid } from "@mui/material";
+import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../types'
 
 const InputTodo = () => {
@@ -23,15 +25,24 @@ const InputTodo = () => {
     description: "",
     owner: "",
     priority: "low",
+    day: "Monday",
     completed: false
   };
 
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
+  const [day, setDay] = React.useState("Monday");
+  const handleChange = (event: SelectChangeEvent) => {
+    setDay(event.target.value);
+    setFormValues({
+      ...formValues,
+      ['day']: event.target.value,
+    });
+  };
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const { description, owner, priority } = formValues
+    const { description, owner, priority, day } = formValues;
     try {
-      const body = { description, owner, priority };
+      const body = { description, owner, priority, day };
       const response = await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,6 +51,7 @@ const InputTodo = () => {
 
       // window.location.href = "/";
       window.location.reload();
+      console.log('body:', body);
     } catch (error) {
       console.error(error.message);
     }
@@ -57,6 +69,7 @@ const InputTodo = () => {
     <>
       <form onSubmit={onSubmitForm}>
         <h1>PERN using React material ui form</h1>
+        <Grid container alignItems="center" direction="column" >
         <Grid item>
           <TextField
             id="description"
@@ -110,12 +123,36 @@ const InputTodo = () => {
         </Grid>
 
         <Grid item>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Day</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={day}
+                label="Day"
+                onChange={handleChange}
+              >
+                <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
+                <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
+                <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
+                <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
+                <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
+                <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
+                <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Grid>
+
+        <Grid item>
           <Button variant="contained" color="primary" type="submit" style={{
             backgroundColor: "green",
             margin: "5px"
           }}>
             Submit
           </Button>
+        </Grid>
         </Grid>
       </form>
     </>
