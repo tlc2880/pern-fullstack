@@ -1,15 +1,34 @@
-import React, { Fragment, useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import React, { useState } from "react";
+//import Typography from "@mui/material/Typography";
+import {
+  TextField,
+  Select,
+  FormGroup,
+  Checkbox,
+  Button,
+  Box,
+  Grid
+} from '@mui/material';
+
+interface todoType {
+  todo_id: Number,
+  description: string,
+  owner: string,
+  completed: boolean
+}
 
 const InputTodo = () => {
-  const [description, setDescription] = useState("");
-  const [owner, setOwner] = useState("Jerry");
+  const initialValues = {
+    todo_id: 0,
+    description: "",
+    owner: "",
+    completed: false
+  };
 
+  const [ formValues, setFormValues ] = useState<todoType>(initialValues);
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
+    const { description, owner } = formValues
     try {
       const body = { description, owner };
       const response = await fetch("http://localhost:5000/todos", {
@@ -25,40 +44,48 @@ const InputTodo = () => {
     }
   };
 
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
   return (
-    <Fragment>
-      <Box sx={{ mt: 8 }}>
-        <Typography variant="h1" align="center">
-          PERN Todo List
-        </Typography>
-      </Box>
-      <Box
-        component="form"
-        onSubmit={onSubmitForm}
-        sx={{
-          mt: 4,
-          display: "flex",
-          width: 500,
-          maxWidth: "100%",
-          mx: "auto",
-        }}
-      >
-        <TextField
-          label="Add new todo"
-          variant="outlined"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <Button variant="contained" type="submit">
-                Add
-              </Button>
-            ),
-          }}
-        />
-      </Box>
-    </Fragment>
+    <>
+      <form onSubmit={onSubmitForm}>
+        <h1>PERN using React material ui form</h1>
+        <Grid item>
+          <TextField
+            id="description"
+            name="description"
+            label="Enter description"
+            type="text"
+            value={formValues.description}
+            onChange={handleInputChange}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="owner"
+            name="owner"
+            label="Enter owner"
+            type="text"
+            value={formValues.owner}
+            onChange={handleInputChange}
+          />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" type="submit" style={{
+            backgroundColor: "green",
+            margin: "5px"
+          }}>
+            Submit
+          </Button>
+        </Grid>
+      </form>
+    </>
   );
 };
 
