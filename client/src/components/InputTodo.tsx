@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 //import Typography from "@mui/material/Typography";
 import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
   TextField,
   Select,
   FormGroup,
@@ -14,6 +19,7 @@ interface todoType {
   todo_id: Number,
   description: string,
   owner: string,
+  priority: string,
   completed: boolean
 }
 
@@ -22,15 +28,16 @@ const InputTodo = () => {
     todo_id: 0,
     description: "",
     owner: "",
+    priority: "low",
     completed: false
   };
 
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const { description, owner } = formValues
+    const { description, owner, priority } = formValues
     try {
-      const body = { description, owner };
+      const body = { description, owner, priority };
       const response = await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,6 +83,38 @@ const InputTodo = () => {
             onChange={handleInputChange}
           />
         </Grid>
+
+        <Grid item>
+          <FormControl>
+            <FormLabel>Priority</FormLabel>
+              <RadioGroup
+                name="priority"
+                value={formValues.priority}
+                onChange={handleInputChange}
+                row
+              >
+              <FormControlLabel
+                key="high"
+                value="high"
+                control={<Radio size="small" />}
+                label="High"
+              />
+              <FormControlLabel
+                key="medium"
+                value="medium"
+                control={<Radio size="small" />}
+                label="Medium"
+              />
+              <FormControlLabel
+                key="low"
+                value="low"
+                control={<Radio size="small" />}
+                label="Low"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+
         <Grid item>
           <Button variant="contained" color="primary" type="submit" style={{
             backgroundColor: "green",
