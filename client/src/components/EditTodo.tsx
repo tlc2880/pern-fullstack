@@ -17,12 +17,15 @@ import {
   FormControlLabel,
   TextField,
   Select,
+  InputLabel,
+  MenuItem,
   FormGroup,
   Checkbox,
   Button,
   Box,
   Grid
 } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 type EditTodoProps = {
   todo: todoType;
@@ -32,7 +35,16 @@ const EditTodo = ( {todo} : EditTodoProps) => {
   const [description, setDescription] = useState(todo.description);
   const [owner, setOwner] = useState(todo.owner);
   const [priority, setPriority] = useState(todo.priority);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [day, setDay] = useState(todo.day);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setDay(event.target.value);
+    // setFormValues({
+    //   ...formValues,
+    //   ['day']: event.target.value,
+    // });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,12 +54,12 @@ const EditTodo = ( {todo} : EditTodoProps) => {
     setOpen(false);
   };
 
-  const updateDescription = async (
+  const updateTodo = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
     try {
-      const body = { description, owner, priority };
+      const body = { description, owner, priority, day };
       const response = await fetch(
         `http://localhost:5000/todos/${todo.todo_id}`,
         {
@@ -76,7 +88,6 @@ const EditTodo = ( {todo} : EditTodoProps) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        onClick={() => setDescription(todo.description)}
       >
         <IconButton
           aria-label="close"
@@ -88,7 +99,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+        <CloseIcon />
         </IconButton>
         <DialogTitle>Edit Todo</DialogTitle>
         <DialogContent sx={{ width: 800, maxWidth: "100%" }}>
@@ -101,7 +112,6 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-            fullWidth
           />
           <TextField
             autoFocus
@@ -113,41 +123,63 @@ const EditTodo = ( {todo} : EditTodoProps) => {
               setOwner(event.target.value);
             }}
           />
-        
-          <FormControl>
-            <FormLabel>Priority</FormLabel>
-              <RadioGroup
-             
-                value={priority}
-                onChange={(event) => {
-                  setPriority(event.target.value);
-                }}
-                row
-              >
-              <FormControlLabel
-                key="high"
-                value="high"
-                control={<Radio size="small" />}
-                label="High"
-              />
-              <FormControlLabel
-                key="medium"
-                value="medium"
-                control={<Radio size="small" />}
-                label="Medium"
-              />
-              <FormControlLabel
-                key="low"
-                value="low"
-                control={<Radio size="small" />}
-                label="Low"
-              />
-            </RadioGroup>
-          </FormControl>
+      
+            <FormControl>
+              <FormLabel>Priority</FormLabel>
+                <RadioGroup
+                  value={priority}
+                  onChange={(event) => {
+                    setPriority(event.target.value);
+                  }}
+                  row
+                >
+                <FormControlLabel
+                  key="high"
+                  value="high"
+                  control={<Radio size="small" />}
+                  label="High"
+                />
+                <FormControlLabel
+                  key="medium"
+                  value="medium"
+                  control={<Radio size="small" />}
+                  label="Medium"
+                />
+                <FormControlLabel
+                  key="low"
+                  value="low"
+                  control={<Radio size="small" />}
+                  label="Low"
+                />
+              </RadioGroup>
+            </FormControl>
+
+            <Grid item>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Day</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={day}
+                  label="Day"
+                  onChange={handleChange}
+                >
+                  <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
+                  <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
+                  <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
+                  <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
+                  <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
+                  <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
+                  <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={(event) => updateDescription(event)}>Save</Button>
+          <Button onClick={(event) => updateTodo(event)}>Save</Button>
         </DialogActions>
       </Dialog>
     </Fragment>

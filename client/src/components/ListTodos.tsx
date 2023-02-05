@@ -76,6 +76,7 @@ const ListTodos = () => {
             <TableCell>Description</TableCell>
             <TableCell>Owner</TableCell>
             <TableCell>Priority</TableCell>
+            <TableCell>Day</TableCell>
             <TableCell>Edit</TableCell>
             <TableCell>Delete</TableCell>
             <TableCell>Complete</TableCell>
@@ -99,6 +100,9 @@ const ListTodos = () => {
                   </TableCell>
                   <TableCell>
                     {todo.priority}
+                  </TableCell>
+                  <TableCell>
+                    {todo.day}
                   </TableCell>
                   <TableCell>
                     <EditTodo todo={todo} />
