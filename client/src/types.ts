@@ -3,6 +3,6 @@ export default interface todoType {
     description: string,
     owner: string,
     priority: string,
-    day: string,
+    day: string | null,
     completed: boolean
   }

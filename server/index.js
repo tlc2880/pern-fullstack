@@ -63,10 +63,12 @@ app.put("/todos/:id", async (req, res) => {
             description,
             owner,
             priority,
+            day,
             completed
         } = req.body;
         if (description) {
-            const editTodo = await pool.query("UPDATE todo SET description=$1, owner=$2, priority=$3 WHERE todo_id = $4", [description, owner, priority, id])
+            const editTodo = await pool.query("UPDATE todo SET description=$1, owner=$2, priority=$3, day=$4 WHERE todo_id = $5", 
+            [description, owner, priority, day, id])
         } else if (completed) {
             const completeTodo = await pool.query("UPDATE todo SET completed = $1 WHERE todo_id = $2", [completed, id])
         }
