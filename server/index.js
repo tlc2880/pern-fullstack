@@ -20,10 +20,10 @@ app.use(function (req, res, next) {
 app.post("/todos", async (req, res) => {
     try {
         const {
-            description, owner, priority, day
+            description, owner, priority, day, morning, afternoon, evening
         } = req.body
-        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority, day) VALUES($1, $2, $3, $4) RETURNING *", 
-        [description, owner, priority, day])
+        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority, day, morning, afternoon, evening) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", 
+            [description, owner, priority, day, morning, afternoon, evening])
         res.json(newTodo.rows[0])
     } catch (error) {
         console.error(error.message)

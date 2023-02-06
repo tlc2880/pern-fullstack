@@ -18,6 +18,7 @@ import {
 import { Grid } from "@mui/material";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../types'
+import "../App.css";
 
 const InputTodo = () => {
   const initialValues = {
@@ -26,11 +27,20 @@ const InputTodo = () => {
     owner: "",
     priority: "low",
     day: "Monday",
+    morning: true,
+    afternoon: false,
+    evening: false,
     completed: false
   };
 
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
-  const [day, setDay] = React.useState("Monday");
+  const [ day, setDay ] = useState("Monday");
+  const [ time, setTime ] = useState({
+    morning: true,
+    afternoon: false,
+    evening: false
+  })
+
   const handleChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     setFormValues({
@@ -38,11 +48,22 @@ const InputTodo = () => {
       ['day']: event.target.value,
     });
   };
+
+  const handleCheckboxChange = (event: any) => {
+    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
+    console.log('time: ', time);
+    setFormValues({
+      ...formValues,
+      [event.target.name]: event.target.checked,
+    });
+    console.log('formValues: ', formValues);
+  };
+
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const { description, owner, priority, day } = formValues;
+    const { description, owner, priority, day, morning, afternoon, evening } = formValues;
     try {
-      const body = { description, owner, priority, day };
+      const body = { description, owner, priority, day, morning, afternoon, evening };
       const response = await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,10 +86,11 @@ const InputTodo = () => {
     });
   };
 
+  const { morning, afternoon, evening } = time;
   return (
     <>
       <form onSubmit={onSubmitForm}>
-        <h1>PERN using React material ui form</h1>
+        <h1 className="input-header" >PERN Todo using Material UI Form</h1>
         <Grid container alignItems="center" direction="column" >
         <Grid item>
           <TextField
@@ -143,6 +165,39 @@ const InputTodo = () => {
               </Select>
             </FormControl>
           </Box>
+        </Grid>
+
+        <Grid item>
+          <FormLabel>Time</FormLabel>
+          <FormGroup>
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="morning"
+                    onChange={handleCheckboxChange}
+                    checked = {morning}
+                  />} 
+                label="Morning" 
+              />
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="afternoon" 
+                    onChange={handleCheckboxChange}
+                    checked={afternoon}
+                  />} 
+                label="Afternoon" 
+              />
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="evening"  
+                    onChange={handleCheckboxChange}
+                    checked={evening}
+                  />}
+                label="Evening" 
+              />
+          </FormGroup>
         </Grid>
 
         <Grid item>
