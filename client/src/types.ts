@@ -4,5 +4,8 @@ export default interface todoType {
     owner: string,
     priority: string,
     day: string | null,
+    morning: boolean,
+    afternoon: boolean,
+    evening: boolean,
     completed: boolean
   }
