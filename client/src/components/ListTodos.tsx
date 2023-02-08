@@ -3,10 +3,8 @@ import EditTodo from "./EditTodo";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
@@ -29,7 +27,7 @@ const ListTodos = () => {
 
   const deleteTodo = async (id: string) => {
     try {
-      const deleteTodo = await fetch(
+      await fetch(
         `http://localhost:5000/todos/${id}`,
         {
           method: "DELETE",
@@ -44,7 +42,7 @@ const ListTodos = () => {
   const completeTodo = async (id: string) => {
     try {
       const body = { completed: true };
-      const completeTodo = await fetch(
+      await fetch(
         `http://localhost:5000/todos/${id}`,
         {
           method: "PUT",
@@ -77,6 +75,7 @@ const ListTodos = () => {
             <TableCell>Owner</TableCell>
             <TableCell>Priority</TableCell>
             <TableCell>Day</TableCell>
+            <TableCell>Time</TableCell>
             <TableCell>Edit</TableCell>
             <TableCell>Delete</TableCell>
             <TableCell>Complete</TableCell>
@@ -103,6 +102,11 @@ const ListTodos = () => {
                   </TableCell>
                   <TableCell>
                     {todo.day}
+                  </TableCell>  
+                  <TableCell>
+                    {todo.morning? 'Morning, ': ''} 
+                    {todo.afternoon? 'Afternoon, ': ''} 
+                    {todo.evening? 'Evening': ''}
                   </TableCell>
                   <TableCell>
                     <EditTodo todo={todo} />

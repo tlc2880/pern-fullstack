@@ -1,9 +1,7 @@
 import React, { Fragment, useState } from "react";
-import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -37,15 +35,20 @@ const EditTodo = ( {todo} : EditTodoProps) => {
   const [priority, setPriority] = useState(todo.priority);
   const [open, setOpen] = useState(false);
   const [day, setDay] = useState(todo.day);
+  const [time, setTime] = useState({
+    morning: todo.morning,
+    afternoon: todo.afternoon,
+    evening: todo.evening
+  })
 
   const handleChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
-    // setFormValues({
-    //   ...formValues,
-    //   ['day']: event.target.value,
-    // });
   };
 
+  const handleCheckboxChange = (event: any) => {
+    setTime({ ...time, [event.target.name]: event.target.checked });
+  };
+  const { morning, afternoon, evening } = time;
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,8 +62,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
   ) => {
     event.preventDefault();
     try {
-      const body = { description, owner, priority, day };
-      const response = await fetch(
+      const body = { description, owner, priority, day, morning, afternoon, evening };
+        await fetch(
         `http://localhost:5000/todos/${todo.todo_id}`,
         {
           method: "PUT",
@@ -176,6 +179,39 @@ const EditTodo = ( {todo} : EditTodoProps) => {
               </FormControl>
             </Box>
           </Grid>
+
+          <Grid item>
+          <FormLabel>Time</FormLabel>
+          <FormGroup>
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="morning"
+                    onChange={handleCheckboxChange}
+                    checked = {morning}
+                  />} 
+                label="Morning" 
+              />
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="afternoon" 
+                    onChange={handleCheckboxChange}
+                    checked={afternoon}
+                  />} 
+                label="Afternoon" 
+              />
+              <FormControlLabel 
+                control={
+                  <Checkbox 
+                    name="evening"  
+                    onChange={handleCheckboxChange}
+                    checked={evening}
+                  />}
+                label="Evening" 
+              />
+          </FormGroup>
+        </Grid>
 
         </DialogContent>
         <DialogActions>
