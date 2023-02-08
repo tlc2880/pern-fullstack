@@ -27,7 +27,7 @@ const InputTodo = () => {
     owner: "",
     priority: "low",
     day: "Monday",
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false,
     completed: false
@@ -36,7 +36,7 @@ const InputTodo = () => {
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
   const [ day, setDay ] = useState("Monday");
   const [ time, setTime ] = useState({
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false
   })
@@ -45,18 +45,16 @@ const InputTodo = () => {
     setDay(event.target.value);
     setFormValues({
       ...formValues,
-      ['day']: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
   const handleCheckboxChange = (event: any) => {
-    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
-    console.log('time: ', time);
+    setTime({ ...time, [event.target.name]: event.target.checked });
     setFormValues({
       ...formValues,
       [event.target.name]: event.target.checked,
     });
-    console.log('formValues: ', formValues);
   };
 
   const onSubmitForm = async (event: React.SyntheticEvent) => {
@@ -64,7 +62,7 @@ const InputTodo = () => {
     const { description, owner, priority, day, morning, afternoon, evening } = formValues;
     try {
       const body = { description, owner, priority, day, morning, afternoon, evening };
-      const response = await fetch("http://localhost:5000/todos", {
+      await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -72,7 +70,6 @@ const InputTodo = () => {
 
       // window.location.href = "/";
       window.location.reload();
-      console.log('body:', body);
     } catch (error) {
       console.error(error.message);
     }
