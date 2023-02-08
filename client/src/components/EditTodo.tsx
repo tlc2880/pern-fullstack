@@ -63,7 +63,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
     event.preventDefault();
     try {
       const body = { description, owner, priority, day, morning, afternoon, evening };
-      const response = await fetch(
+        await fetch(
         `http://localhost:5000/todos/${todo.todo_id}`,
         {
           method: "PUT",

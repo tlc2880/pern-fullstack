@@ -41,11 +41,12 @@ const InputTodo = () => {
     evening: false
   })
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     setFormValues({
       ...formValues,
-      [event.target.name]: event.target.value,
+      // eslint-disable-next-line
+      ['day']: event.target.value,
     });
   };
 
@@ -150,7 +151,7 @@ const InputTodo = () => {
                 id="demo-simple-select"
                 value={day}
                 label="Day"
-                onChange={handleChange}
+                onChange={handleSelectChange}
               >
                 <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
                 <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
