@@ -51,7 +51,7 @@ app.get("/todos/:id", async (req, res) => {
     }
 })
 
-// Update a todo
+// Update a todo feature
 app.put("/todos/:id", async (req, res) => {
     try {
         const { id } = req.params;
