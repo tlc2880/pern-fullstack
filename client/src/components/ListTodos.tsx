@@ -78,7 +78,7 @@ const ListTodos = () => {
             <TableCell>Time</TableCell>
             <TableCell>Edit</TableCell>
             <TableCell>Delete</TableCell>
-            <TableCell>Complete</TableCell>
+            <TableCell>Completed</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

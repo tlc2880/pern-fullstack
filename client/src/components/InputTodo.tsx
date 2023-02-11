@@ -13,9 +13,9 @@ import {
   Checkbox,
   Button,
   Box,
-  InputLabel
+  InputLabel,
+  Grid
 } from '@mui/material';
-import { Grid } from "@mui/material";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../types'
 import "../App.css";
@@ -50,7 +50,7 @@ const InputTodo = () => {
     });
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime({ ...time, [event.target.name]: event.target.checked as boolean });
     console.log('time: ', time);
     setFormValues({

@@ -10,21 +10,22 @@ import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
+import todoType from '../../types'
 
 const ListTodos = () => {
   const todo = useAppSelector((state) => state.todo);
-  const todos = [...todo.todos]
   const dispatch = useAppDispatch();
+  const todos: todoType[] = [...todo.todos];
 
   useEffect(() => {
     dispatch(getTodos());
   }, [dispatch]);
   
-  const handleDelete = (id) => {
+  const handleDelete = (id: string) => {
     dispatch(deleteTodo(id));
   };
   
-  const completeTodo = (todo) => {
+  const completeTodo = (todo: todoType) => {
     const newTodo = {...todo}
     newTodo.completed = true;
     dispatch(updateTodo(newTodo));
@@ -85,7 +86,7 @@ const ListTodos = () => {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
-                  <TableCell>
+                   <TableCell>
                     <IconButton
                       component="button"
                       onClick={() => completeTodo(todo)}
