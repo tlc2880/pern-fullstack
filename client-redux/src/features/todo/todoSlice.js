@@ -57,6 +57,28 @@ export const updateTodo = createAsyncThunk(
   }
 );
 
+export const updateTodo = createAsyncThunk(
+  "todos/updateTodo",
+  async (todo, { rejectWithValue }) => {
+    console.log('todoSlice: ', todo)
+    try {
+      const response = await axios.put(`${baseURL}/todos/${todo.todo_id}`, {
+        owner: todo.owner,
+        description: todo.description,
+        completed: todo.completed,
+        day: todo.day,
+        priority: todo.priority,
+        morning: todo.morning,
+        afternoon: todo.afternoon,
+        evening: todo.evening,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const todoSlice = createSlice({
   name: "todos",
   initialState,

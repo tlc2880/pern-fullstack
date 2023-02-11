@@ -18,9 +18,16 @@ import {
   Grid
 } from '@mui/material';
 
-const InputTodo = () => {
-  const initialValues = {
-    todo_id: "",
+import { Grid } from "@mui/material";
+import { SelectChangeEvent } from '@mui/material/Select';
+import { useDispatch, useSelector } from "react-redux";
+import { createTodo, updateTodo } from "./todoSlice";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { getTodo } from "../api";
+
+function InputTodo() {
+  const [todo, setTodo] = useState({
+    title: "",
     description: "",
     owner: "",
     priority: "low",

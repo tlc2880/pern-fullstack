@@ -27,7 +27,7 @@ const InputTodo = () => {
     owner: "",
     priority: "low",
     day: "Monday",
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false,
     completed: false
@@ -36,12 +36,12 @@ const InputTodo = () => {
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
   const [ day, setDay ] = useState("Monday");
   const [ time, setTime ] = useState({
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false
   })
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     setFormValues({
       ...formValues,
@@ -57,7 +57,6 @@ const InputTodo = () => {
       ...formValues,
       [event.target.name]: event.target.checked,
     });
-    console.log('formValues: ', formValues);
   };
 
   const onSubmitForm = async (event: React.SyntheticEvent) => {
@@ -73,7 +72,6 @@ const InputTodo = () => {
 
       // window.location.href = "/";
       window.location.reload();
-      console.log('body:', body);
     } catch (error) {
       console.error(error.message);
     }
@@ -154,7 +152,7 @@ const InputTodo = () => {
                 id="demo-simple-select"
                 value={day}
                 label="Day"
-                onChange={handleChange}
+                onChange={handleSelectChange}
               >
                 <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
                 <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
