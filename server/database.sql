@@ -6,9 +6,9 @@ CREATE TABLE todo(
     owner VARCHAR(255),
     priority VARCHAR(10),
     day VARCHAR(10),
-    Morning boolean,
-    Afternoon boolean,
-    Evening boolean,
+    morning boolean,
+    afternoon boolean,
+    evening boolean,
     completed boolean
 );
 

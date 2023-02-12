@@ -27,7 +27,7 @@ const InputTodo = () => {
     owner: "",
     priority: "low",
     day: "Monday",
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false,
     completed: false
@@ -36,12 +36,12 @@ const InputTodo = () => {
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
   const [ day, setDay ] = useState("Monday");
   const [ time, setTime ] = useState({
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false
   })
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     setFormValues({
       ...formValues,
@@ -151,7 +151,7 @@ const InputTodo = () => {
                 id="demo-simple-select"
                 value={day}
                 label="Day"
-                onChange={handleChange}
+                onChange={handleSelectChange}
               >
                 <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
                 <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
