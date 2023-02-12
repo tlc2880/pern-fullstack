@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { updateTodo } from "./todoSlice";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch,  } from "../../app/hooks";
+import { SelectChangeEvent } from '@mui/material/Select';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,9 +25,13 @@ import {
   Box,
   Grid
 } from '@mui/material';
+import todoType from '../../types';
 
-const EditTodo = ( {todo} ) => {
-  const [newTodo, setNewTodo] = useState({
+type EditTodoProps = {
+  todo: todoType;
+}
+const EditTodo = ( {todo}: EditTodoProps ) => {
+  const [newTodo, setNewTodo] = useState<todoType>({
     todo_id: todo.todo_id,
     owner: todo.owner,
     description: todo.description,
@@ -50,18 +55,18 @@ const EditTodo = ( {todo} ) => {
 
   const dispatch = useAppDispatch();
 
-  const handleEdit = (todo) => {
+  const handleEdit = (todo: todoType) => {
     dispatch(updateTodo(newTodo));
     window.location.reload();
   };
 
-  const handleDayChange = (event) => {
+  const handleDayChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     // eslint-disable-next-line 
     setNewTodo({...newTodo, ['day']: event.target.value});
   };
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime({ ...time, [event.target.name]: event.target.checked });
     setNewTodo({ ...newTodo, [event.target.name]: event.target.checked });
   };
@@ -75,7 +80,7 @@ const EditTodo = ( {todo} ) => {
   };
 
   return (
-    <Fragment>
+    <>
       <IconButton
         component="button"
         onClick={handleClickOpen}
@@ -220,7 +225,7 @@ const EditTodo = ( {todo} ) => {
           <Button onClick={() => handleEdit(todo)}>Save</Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </>
   );
 };
 
