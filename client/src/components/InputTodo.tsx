@@ -52,7 +52,6 @@ const InputTodo = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime({ ...time, [event.target.name]: event.target.checked as boolean });
-    console.log('time: ', time);
     setFormValues({
       ...formValues,
       [event.target.name]: event.target.checked,

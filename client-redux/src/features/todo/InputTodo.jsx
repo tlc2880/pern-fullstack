@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { createTodo } from "./todoSlice";
 import { useAppDispatch } from "../../app/hooks";
 import {
   FormControl,
@@ -19,15 +18,11 @@ import {
 } from '@mui/material';
 
 import { Grid } from "@mui/material";
-import { SelectChangeEvent } from '@mui/material/Select';
-import { useDispatch, useSelector } from "react-redux";
-import { createTodo, updateTodo } from "./todoSlice";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { getTodo } from "../api";
+import { createTodo } from "./todoSlice";
 
 function InputTodo() {
-  const [todo, setTodo] = useState({
-    title: "",
+  const initialValues = {
+    todo_id: "",
     description: "",
     owner: "",
     priority: "low",
