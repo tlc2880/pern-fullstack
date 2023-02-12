@@ -45,7 +45,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
     setDay(event.target.value);
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime({ ...time, [event.target.name]: event.target.checked });
   };
   const { morning, afternoon, evening } = time;
