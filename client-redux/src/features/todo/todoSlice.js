@@ -1,19 +1,17 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import todoType from '../../types'
 
 const baseURL = "http://localhost:5000";
-
 const initialState = {
   todos: [],
   responseStatus: "",
   responseMessage: "",
 };
 
-export const getTodo = async (id: number) =>
+export const getTodo = async (id) =>
   await axios.get(`/todos/${id}`);
 
-export const getTodos: any = createAsyncThunk("todos/getTodos", async () => {
+export const getTodos = createAsyncThunk("todos/getTodos", async () => {
   try {
     const response = await axios.get(`${baseURL}/todos`);
     return response.data;
@@ -22,9 +20,9 @@ export const getTodos: any = createAsyncThunk("todos/getTodos", async () => {
   }
 });
 
-export const deleteTodo: any = createAsyncThunk(
+export const deleteTodo = createAsyncThunk(
   "todos/deleteTodo",
-  async (todoId: string, { rejectWithValue }) => {
+  async (todoId, { rejectWithValue }) => {
     try {
       await axios.delete(`${baseURL}/todos/${todoId}`);
       return todoId;
@@ -34,9 +32,9 @@ export const deleteTodo: any = createAsyncThunk(
   }
 );
 
-export const createTodo: any = createAsyncThunk(
+export const createTodo = createAsyncThunk(
   "todos/createTodo",
-  async (todo: todoType, { rejectWithValue }) => {
+  async (todo, { rejectWithValue }) => {
     try {
       const response = await axios.post( `${baseURL}/todos`, todo );
       return response.data;
@@ -46,9 +44,10 @@ export const createTodo: any = createAsyncThunk(
   }
 );
 
-export const updateTodo: any = createAsyncThunk(
+export const updateTodo = createAsyncThunk(
   "todos/updateTodo",
-  async (todo: todoType, { rejectWithValue }) => {
+  async (todo, { rejectWithValue }) => {
+    console.log('todoSlice: ', todo)
     try {
       const response = await axios.put( `${baseURL}/todos/${todo.todo_id}`, todo );
       return response.data;
@@ -86,7 +85,7 @@ const todoSlice = createSlice({
     [deleteTodo.fulfilled]: (state, action) => {
       return {
         ...state,
-        todos: state.todos.filter((todo: todoType) => todo.todo_id !== action.payload),
+        todos: state.todos.filter((todo) => todo.todo_id !== action.payload),
         responseStatus: "success",
         responseMessage: "Todo deleted successfully",
       };
@@ -107,7 +106,7 @@ const todoSlice = createSlice({
     [updateTodo.fulfilled]: (state, action) => {
       return {
         ...state,
-        todos: state.todos.map((todo: todoType) =>
+        todos: state.todos.map((todo) =>
           todo.todo_id === action.payload.todo_id ? action.payload : todo
         ),
         responseStatus: "success",

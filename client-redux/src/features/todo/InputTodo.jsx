@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-import { createTodo } from "./todoSlice";
+import React, { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import {
   FormControl,
@@ -14,13 +13,13 @@ import {
   Checkbox,
   Button,
   Box,
-  Grid,
   InputLabel
 } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
-import todoType from '../../types'
 
-const InputTodo = () => {
+import { Grid } from "@mui/material";
+import { createTodo } from "./todoSlice";
+
+function InputTodo() {
   const initialValues = {
     todo_id: "",
     description: "",
@@ -33,7 +32,7 @@ const InputTodo = () => {
     completed: false
   };
 
-  const [ formValues, setFormValues ] = useState<todoType>(initialValues);
+  const [ formValues, setFormValues ] = useState(initialValues);
   const [ day, setDay ] = useState("Monday");
   const [ time, setTime ] = useState({
     morning: true,
@@ -41,7 +40,7 @@ const InputTodo = () => {
     evening: false
   })
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event) => {
     setDay(event.target.value);
     setFormValues({
       ...formValues,
@@ -50,23 +49,25 @@ const InputTodo = () => {
     });
   };
 
-  const handleCheckboxChange = (event: any) => {
-    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
+  const handleCheckboxChange = (event) => {
+    setTime({ ...time, [event.target.name]: event.target.checked });
+    console.log('time: ', time);
     setFormValues({
       ...formValues,
       [event.target.name]: event.target.checked,
     });
+    console.log('formValues: ', formValues);
   };
 
   const dispatch = useAppDispatch();
 
-  const onSubmitForm = async (event: React.SyntheticEvent) => {
+  const onSubmitForm = async (event) => {
     event.preventDefault();
     dispatch(createTodo(formValues));
     window.location.reload();
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
       ...formValues,
@@ -78,7 +79,7 @@ const InputTodo = () => {
   return (
     <>
       <form onSubmit={onSubmitForm}>
-        <Grid container alignItems="center" direction="column" >
+      <Grid container alignItems="center" direction="column" >
         <Grid item>
           <TextField
             id="description"
@@ -99,6 +100,7 @@ const InputTodo = () => {
             onChange={handleInputChange}
           />
         </Grid>
+      
 
         <Grid item>
           <FormControl>
@@ -194,10 +196,11 @@ const InputTodo = () => {
           }}>
             Submit
           </Button>
-        </Grid>
+        </Grid> 
         </Grid>
       </form>
     </>
   );
 };
+
 export default InputTodo;
