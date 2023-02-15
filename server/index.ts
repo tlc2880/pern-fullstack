@@ -1,8 +1,8 @@
-import express, {Request, Response, Application} from 'express';
-import cors from 'cors';
+import express, { Request, Response } from 'express';
+// import cors from 'cors';
 const app = express();
 // const cors = require('cors');
-const pool = require("./db");
+import {pool} from "./db";
 
 // middleware
 // app.use(cors())
