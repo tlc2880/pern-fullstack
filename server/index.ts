@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 // import cors from 'cors';
 const app = express();
 // const cors = require('cors');
-import {pool} from "./db";
+const pool = require("./db");
 
 // middleware
 // app.use(cors())
