@@ -26,3 +26,7 @@ package-lock.json
 /server/package-lock.json
 /client/package-lock.json
 /client/yarn.lock
+./server/database.sql
+./server/db.js
+node_modules
+package-lock.json
