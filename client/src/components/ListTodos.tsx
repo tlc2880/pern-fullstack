@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses }  from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from '@mui/material/Box';
@@ -14,7 +14,8 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { useTheme } from '@mui/material/styles';
+import TableSortLabel from "@mui/material/TableSortLabel";
+import { useTheme, styled } from '@mui/material/styles';
 // import EditTodo from "./EditTodo";
 // import DeleteIcon from "@mui/icons-material/Delete";
 // import DoneIcon from "@mui/icons-material/Done";
@@ -89,10 +90,30 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 const ListTodos = () => {
   const [todos, setTodos] = useState<ToDoContainer>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
   const getTodos = async () => {
     try {
@@ -164,49 +185,80 @@ const ListTodos = () => {
     setPage(0);
   };
 
+  type orderType = "asc" | "desc";
+
+  const [orderDirection, setOrderDirection] = useState<orderType>("asc");
+
+  const sortAlphaArray = (arr: todoType[], orderBy: orderType) => {
+    const sortedData = [...arr].sort((a, b) => {
+      if (orderBy === 'asc') {
+          return a.owner.localeCompare(b.owner);
+      } else {
+          return b.owner.localeCompare(a.owner);
+      }
+    });
+    return sortedData;
+  }
+
+  const handleAlphaSort = () => {
+    setTodos(sortAlphaArray(todos, orderDirection));
+    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+  }
+
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 800 }} aria-label="custom pagination table">
+        <Table sx={{ mt:4 }} aria-label="custom pagination table">
           <TableHead>
-            <TableRow>
-              <TableCell>Description</TableCell>
-              <TableCell align="right">Owner</TableCell>
-              <TableCell align="right">Priority</TableCell>
-              <TableCell align="right">Day</TableCell>
-            </TableRow>
+            <StyledTableRow>
+              <StyledTableCell>Description</StyledTableCell>
+              <StyledTableCell align="right" onClick={handleAlphaSort}>
+                <TableSortLabel active={true} direction={orderDirection}>
+                  Owner
+                </TableSortLabel>
+              </StyledTableCell>
+              <StyledTableCell align="right">Priority</StyledTableCell>
+              <StyledTableCell align="right">Day</StyledTableCell>
+              <StyledTableCell align="right">Time</StyledTableCell>
+            </StyledTableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
               ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : todos
             ).map((row: todoType) => (
-              <TableRow key={row.todo_id}>
-                <TableCell style={{ width: 450 }} component="th" scope="row">
+              <StyledTableRow key={row.todo_id}>
+                <StyledTableCell style={{ width: 450 }} component="th" scope="row">
                   {row.description}
-                </TableCell>
-                <TableCell style={{ width: 250 }} align="right">
+                </StyledTableCell>
+                <StyledTableCell style={{ width: 250 }} align="right">
                   {row.owner}
-                </TableCell>
-                <TableCell style={{ width: 250 }} align="right">
+                </StyledTableCell>
+
+                <StyledTableCell style={{ width: 250 }} align="right">
                   {row.priority}
-                </TableCell>
-                <TableCell style={{ width: 250 }} align="right">
+                </StyledTableCell>
+                <StyledTableCell style={{ width: 250 }} align="right">
                   {row.day}
-                </TableCell>
-              </TableRow>
+                </StyledTableCell>
+                <StyledTableCell style={{ width: 250 }} align="right">
+                    {row.morning? 'Morning, ': ''} 
+                    {row.afternoon? 'Afternoon, ': ''} 
+                    {row.evening? 'Evening': ''}
+                </StyledTableCell>
+              </StyledTableRow>
             ))}
             {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
+              <StyledTableRow style={{ height: 53 * emptyRows }}>
+                <StyledTableCell colSpan={6} />
+              </StyledTableRow>
             )}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <StyledTableRow>
               <TablePagination
-                rowsPerPageOptions={[3, 6, 9, { label: 'All', value: -1 }]}
-                colSpan={4}
+                rowsPerPageOptions={[6, 12, 18, { label: 'All', value: -1 }]}
+                colSpan={5}
                 count={todos.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -220,7 +272,7 @@ const ListTodos = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
               />
-            </TableRow>
+            </StyledTableRow>
           </TableFooter>
         </Table>
       </TableContainer>
