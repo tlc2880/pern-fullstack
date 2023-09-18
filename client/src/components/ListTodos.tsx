@@ -16,9 +16,9 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useTheme, styled } from '@mui/material/styles';
-// import EditTodo from "./EditTodo";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import DoneIcon from "@mui/icons-material/Done";
+import EditTodo from "./EditTodo";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from "@mui/icons-material/Done";
 
 import todoType from '../types'
 
@@ -113,7 +113,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ListTodos = () => {
   const [todos, setTodos] = useState<ToDoContainer>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(6);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
 
   const getTodos = async () => {
     try {
@@ -125,42 +125,42 @@ const ListTodos = () => {
     }
   };
 
-  // const deleteTodo = async (id: string) => {
-  //   try {
-  //     await fetch(
-  //       `http://localhost:5000/todos/${id}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-  //     setTodos(todos.filter((todo) => todo.todo_id !== id));
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
+  const deleteTodo = async (id: string) => {
+    try {
+      await fetch(
+        `http://localhost:5000/todos/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      setTodos(todos.filter((todo) => todo.todo_id !== id));
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-  // const completeTodo = async (id: string) => {
-  //   try {
-  //     const body = { completed: true };
-  //     await fetch(
-  //       `http://localhost:5000/todos/${id}`,
-  //       {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(body),
-  //       }
-  //     );
-  //     setTodos(
-  //       todos.map((todo) => {
-  //         return todo.todo_id === id ? { ...todo, completed: true } : todo;
-  //       })
-  //     );
-  //     // window.location.href = "/";
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
+  const completeTodo = async (id: string) => {
+    try {
+      const body = { completed: true };
+      await fetch(
+        `http://localhost:5000/todos/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      setTodos(
+        todos.map((todo) => {
+          return todo.todo_id === id ? { ...todo, completed: true } : todo;
+        })
+      );
+      // window.location.href = "/";
+      window.location.reload();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   useEffect(() => {
     getTodos();
@@ -205,13 +205,37 @@ const ListTodos = () => {
     setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
   }
 
+  const sortArray = (arr: todoType[], orderBy: orderType) => {
+    switch (orderBy) {
+      case "asc":
+      default:
+        return arr.sort((a: todoType, b: todoType) =>
+          a.todo_id > b.todo_id ? 1 : b.todo_id > a.todo_id ? -1 : 0
+        );
+      case "desc":
+        return arr.sort((a: todoType, b: todoType) =>
+          a.todo_id < b.todo_id ? 1 : b.todo_id < a.todo_id ? -1 : 0
+        );
+    }
+  };
+
+  const handleSortRequest = () => {
+    setTodos(sortArray(todos, orderDirection));
+    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ mt:4 }} aria-label="custom pagination table">
+        <Table sx={{ width: "100%" }} aria-label="custom pagination table">
           <TableHead>
             <StyledTableRow>
-              <StyledTableCell>Description</StyledTableCell>
+            <StyledTableCell align="right" onClick={handleSortRequest}>
+                <TableSortLabel active={true} direction={orderDirection}>
+                  Id
+                </TableSortLabel>
+              </StyledTableCell>
+              <StyledTableCell align="left">Description</StyledTableCell>
               <StyledTableCell align="right" onClick={handleAlphaSort}>
                 <TableSortLabel active={true} direction={orderDirection}>
                   Owner
@@ -220,32 +244,67 @@ const ListTodos = () => {
               <StyledTableCell align="right">Priority</StyledTableCell>
               <StyledTableCell align="right">Day</StyledTableCell>
               <StyledTableCell align="right">Time</StyledTableCell>
+              <StyledTableCell align="right">Edit</StyledTableCell>
+              <StyledTableCell align="right">Delete</StyledTableCell>
+              <StyledTableCell align="right">Completed</StyledTableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
               ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : todos
-            ).map((row: todoType) => (
+            ).sort((a, b) => +a.completed - +b.completed)
+              .map((row: todoType) => (
+                
               <StyledTableRow key={row.todo_id}>
-                <StyledTableCell style={{ width: 450 }} component="th" scope="row">
+                <StyledTableCell style={{ width: 75 }} align="right">
+                  {row.todo_id}
+                </StyledTableCell>
+                <StyledTableCell 
+                  style={
+                    row.completed ? { textDecoration: "line-through", width: 450 } : { width: 450 }
+                  }
+                  component="th" 
+                  scope="row"
+                >
                   {row.description}
                 </StyledTableCell>
                 <StyledTableCell style={{ width: 250 }} align="right">
                   {row.owner}
                 </StyledTableCell>
-
                 <StyledTableCell style={{ width: 250 }} align="right">
                   {row.priority}
                 </StyledTableCell>
                 <StyledTableCell style={{ width: 250 }} align="right">
                   {row.day}
                 </StyledTableCell>
-                <StyledTableCell style={{ width: 250 }} align="right">
-                    {row.morning? 'Morning, ': ''} 
-                    {row.afternoon? 'Afternoon, ': ''} 
-                    {row.evening? 'Evening': ''}
+                <StyledTableCell style={{ width: 350 }} align="right">
+                  {row.morning? 'Morning, ': ''} 
+                  {row.afternoon? 'Afternoon, ': ''} 
+                  {row.evening? 'Evening': ''}
                 </StyledTableCell>
+                <StyledTableCell style={{ width: 100 }} align="right">
+                    < EditTodo todo={row} />
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 100 }} align="right">
+                    <IconButton
+                      component="button"
+                      onClick={() => deleteTodo(row.todo_id)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell>
+                   <StyledTableCell  style={{ width: 100 }} align="right">
+                    <IconButton
+                      component="button"
+                      onClick={() => completeTodo(row.todo_id)}
+                      disabled={row.completed}
+                      color="success"
+                    >
+                      <DoneIcon />
+                    </IconButton>
+                  </StyledTableCell>
               </StyledTableRow>
             ))}
             {emptyRows > 0 && (
@@ -258,7 +317,7 @@ const ListTodos = () => {
             <StyledTableRow>
               <TablePagination
                 rowsPerPageOptions={[6, 12, 18, { label: 'All', value: -1 }]}
-                colSpan={5}
+                colSpan={8}
                 count={todos.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
