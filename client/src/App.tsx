@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
-import InputTodo from "./components/InputTodo";
+import InputDialog from "./components/InputDialog";
 import ListTodos from "./components/ListTodos";
 import Container from "@mui/material/Container";
 
@@ -17,7 +17,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
-          <InputTodo />
+          <InputDialog />
           <ListTodos />
         </Container>
       </ThemeProvider>
