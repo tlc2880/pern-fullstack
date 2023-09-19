@@ -113,7 +113,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ListTodos = () => {
   const [todos, setTodos] = useState<ToDoContainer>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
   const getTodos = async () => {
     try {
