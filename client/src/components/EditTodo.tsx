@@ -1,13 +1,13 @@
-import React, { useState, ChangeEvent, SyntheticEvent } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
+import React, { useState, ChangeEvent } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import todoType from '../types'
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  SelectChangeEvent,
   FormControl,
   FormLabel,
   RadioGroup,
@@ -23,10 +23,10 @@ import {
   Box,
   Grid
 } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import { todoCollapsType } from '../types'
 
 type EditTodoProps = {
-  todo: todoType;
+  todo: todoCollapsType;
 }
 
 const EditTodo = ( {todo} : EditTodoProps) => {
@@ -58,7 +58,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
     setOpen(false);
   };
 
-  const updateTodo = async (event: SyntheticEvent) => {
+  const updateTodo = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     try {
       const body = { description, owner, priority, day, morning, afternoon, evening };
@@ -225,8 +225,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             color="primary" 
             type="submit" 
             style={{
-                backgroundColor: "green",
-                margin: "5px"
+              backgroundColor: "green",
+              margin: "5px"
             }}>
             Submit
           </Button>
@@ -235,8 +235,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             variant="contained"
             color="error"
             style={{
-                backgroundColor: "error",
-                margin: "5px"
+              backgroundColor: "error",
+              margin: "5px"
             }}>
             Cancel
           </Button>
