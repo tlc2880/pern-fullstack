@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import InputDialog from "./components/InputDialog";
 import ListTodos from "./components/ListTodos";
 import Container from "@mui/material/Container";
+import "./App.css";
 
 const darkTheme = createTheme({
   palette: {
@@ -17,6 +18,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
+			<h1 className="input-header" >PERN using MUI and Styled Table</h1>
           <InputDialog />
           <ListTodos />
         </Container>
