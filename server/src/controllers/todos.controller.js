@@ -26,11 +26,11 @@ const updateTodo = async (req, res) => {
     try {
         const { id } = req.params;
         const {
-            description, owner, priority, day, morning, afternoon, evening, completed
+            description, owner, priority, day, morning, afternoon, evening, duration, completed
         } = req.body;
         if (description) {
-            const editTodo = await pool.query("UPDATE todo SET description=$1, owner=$2, priority=$3, day=$4, morning=$5, afternoon=$6, evening=$7, completed=$8 WHERE todo_id = $9", 
-                [description, owner, priority, day, morning, afternoon, evening, completed, id])
+            const editTodo = await pool.query("UPDATE todo SET description=$1, owner=$2, priority=$3, day=$4, morning=$5, afternoon=$6, evening=$7, duration=$8, completed=$9 WHERE todo_id = $10", 
+                [description, owner, priority, day, morning, afternoon, evening, duration, completed, id])
         } else if (completed) {
             const completeTodo = await pool.query("UPDATE todo SET completed = $1 WHERE todo_id = $2", [completed, id])
         }
@@ -44,10 +44,10 @@ const updateTodo = async (req, res) => {
 const createTodo = async (req, res) => {
     try {
         const {
-            description, owner, priority, day, morning, afternoon, evening
+            description, owner, priority, day, morning, afternoon, evening, duration
         } = req.body
-        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority, day, morning, afternoon, evening) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", 
-            [description, owner, priority, day, morning, afternoon, evening])
+        const newTodo = await pool.query("INSERT INTO todo (description, owner, priority, day, morning, afternoon, evening, duration) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *", 
+            [description, owner, priority, day, morning, afternoon, evening, duration])
         res.json(newTodo.rows[0])
     } catch (error) {
         console.error(error.message)

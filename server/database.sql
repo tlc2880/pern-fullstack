@@ -9,6 +9,7 @@ CREATE TABLE todo(
     morning boolean,
     afternoon boolean,
     evening boolean,
+    duration VARCHAR(30),
     completed boolean
 );
 

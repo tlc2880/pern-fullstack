@@ -83,13 +83,13 @@ export default function Row(props: {
             {row.priority}
           </StyledTableCell>
           <StyledTableCell align="right" style={{ width: 75 }}>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
+             <IconButton
+               aria-label="expand row"
+               size="small"
+               onClick={() => setOpen(!open)}
+             >
+               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+             </IconButton>
            </StyledTableCell>
           <StyledTableCell style={{ width: 100 }} align="right">
             < EditTodo todo={row} />
@@ -116,7 +116,7 @@ export default function Row(props: {
         </StyledTableRow>
    
         <StyledTableRow>
-          <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={2}>
+          <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
@@ -126,7 +126,8 @@ export default function Row(props: {
                   <TableHead>
                     <StyledTableRow>
                       <StyledTableCell>Day</StyledTableCell>
-                      <StyledTableCell align="right">Time</StyledTableCell>
+                      <StyledTableCell align="right">Time Range</StyledTableCell>
+                      <StyledTableCell align="right">Duration</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
                   <TableBody>
@@ -134,10 +135,13 @@ export default function Row(props: {
                       <StyledTableCell component="th" scope="row">
                         {row.day}
                       </StyledTableCell>
-                      <StyledTableCell align="right" style={{ width: 300 }}>                  
+                      <StyledTableCell align="right" style={{ width: 250 }}>                  
                         {row.morning? 'Morning, ': ''} 
                         {row.afternoon? 'Afternoon, ': ''} 
                         {row.evening? 'Evening': ''}
+                      </StyledTableCell>
+                      <StyledTableCell align="right" style={{ width: 200 }}>                  
+                        {row.duration} 
                       </StyledTableCell>
                     </StyledTableRow>
                   </TableBody> 
