@@ -40,6 +40,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
     afternoon: todo.afternoon,
     evening: todo.evening
   })
+  const [duration, setDuration] = useState(todo.duration);
 
   const handleChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
@@ -61,7 +62,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
   const updateTodo = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     try {
-      const body = { description, owner, priority, day, morning, afternoon, evening };
+      const body = { description, owner, priority, day, morning, afternoon, evening, duration };
         await fetch(
         `http://localhost:5000/todos/${todo.todo_id}`,
         {
@@ -214,6 +215,17 @@ const EditTodo = ( {todo} : EditTodoProps) => {
                 label="Evening" 
               />
           </FormGroup>
+          <TextField
+            autoFocus
+            margin="normal"
+            label="Todo duration"
+            variant="outlined"
+            sx={{ width: 400 }}
+            value={duration}
+            onChange={(event) => {
+              setDuration(event.target.value);
+            }}
+          />
           </Grid>
         </Grid>
         </form >
@@ -225,8 +237,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             color="primary" 
             type="submit" 
             style={{
-              backgroundColor: "green",
-              margin: "5px"
+                backgroundColor: "green",
+                margin: "5px"
             }}>
             Submit
           </Button>
@@ -235,8 +247,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             variant="contained"
             color="error"
             style={{
-              backgroundColor: "error",
-              margin: "5px"
+                backgroundColor: "error",
+                margin: "5px"
             }}>
             Cancel
           </Button>

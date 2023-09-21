@@ -18,7 +18,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
-			<h1 className="input-header" >PERN using MUI and Styled Table</h1>
+			    <h1 className="input-header" >PERN using MUI and Styled Table</h1>
           <InputDialog />
           <ListTodos />
         </Container>

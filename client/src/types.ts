@@ -7,6 +7,7 @@ export default interface todoType {
   morning: boolean,
   afternoon: boolean,
   evening: boolean,
+  duration: string,
   completed: boolean
 }
 
@@ -19,6 +20,7 @@ export type todoCollapsType = {
   morning: boolean,
   afternoon: boolean,
   evening: boolean,
+  duration: string,
   completed: boolean
 }
 

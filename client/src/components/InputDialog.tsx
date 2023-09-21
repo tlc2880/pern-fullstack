@@ -25,7 +25,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../types'
 
 export default function InputDialog() {
-  const [open, setOpen] = useState(false);
+  const [ open, setOpen ] = useState(false);
   const [ day, setDay ] = useState("Monday");
   const [ time, setTime ] = useState({
     morning: false,
@@ -42,7 +42,8 @@ export default function InputDialog() {
     morning: false,
     afternoon: false,
     evening: false,
-    completed: false
+    completed: false,
+    duration: ""
   };
 
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
@@ -57,9 +58,9 @@ export default function InputDialog() {
 
 const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const { description, owner, priority, day, morning, afternoon, evening } = formValues;
+    const { description, owner, priority, day, morning, afternoon, evening, duration } = formValues;
     try {
-      const body = { description, owner, priority, day, morning, afternoon, evening };
+      const body = { description, owner, priority, day, morning, afternoon, evening, duration };
       await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -237,6 +238,15 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
                   />}
                 label="Evening" 
               />
+              <TextField
+                id="duration"
+                name="duration"
+                label="Enter duration"
+                type="text"
+                sx={{ width: 400 }}
+                value={formValues.duration}
+                onChange={handleInputChange}
+            />
             </FormGroup>
             </Grid>
           </form>
