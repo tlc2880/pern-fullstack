@@ -1,14 +1,16 @@
-import React, { useEffect  } from "react";
+import React, { useState, useEffect  } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { getTodos, deleteTodo, updateTodo } from "./todoSlice";
 import EditTodo from "./EditTodo";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import Box from '@mui/material/Box';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,10 +19,11 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { useTheme } from '@mui/material/styles';
+// import TableSortLabel from "@mui/material/TableSortLabel";
+import { useTheme, styled } from '@mui/material/styles';
 import todoType from '../../types'
 
-interface ToDoContainer extends Array<todoType> {}
+//interface ToDoContainer extends Array<todoType> {}
 
 interface TablePaginationActionsProps {
   count: number;
@@ -31,6 +34,8 @@ interface TablePaginationActionsProps {
     newPage: number,
   ) => void;
 }
+
+// type orderType = "asc" | "desc";
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
   const theme = useTheme();
@@ -88,30 +93,51 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 const ListTodos = () => {
   const todo = useAppSelector((state) => state.todo);
   const dispatch = useAppDispatch();
   const todos: todoType[] = [...todo.todos];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(6);
+//  const [orderDirection, setOrderDirection] = useState<orderType>("asc");
 
   useEffect(() => {
     dispatch(getTodos());
   }, [dispatch]);
   
-  // const handleDelete = (id: string) => {
-  //   dispatch(deleteTodo(id));
-  // };
+  const handleDelete = (id: string) => {
+    dispatch(deleteTodo(id));
+  };
   
-  // const completeTodo = (todo: todoType) => {
-  //   const newTodo = {...todo}
-  //   newTodo.completed = true;
-  //   dispatch(updateTodo(newTodo));
-  //   window.location.reload();
-  // }
+  const completeTodo = (todo: todoType) => {
+    const newTodo = {...todo}
+    newTodo.completed = true;
+    dispatch(updateTodo(newTodo));
+    window.location.reload();
+  }
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
+    // Avoid a layout jump when reaching the last page with empty rows.
+    const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - todos.length) : 0;
 
   const handleChangePage = (
@@ -131,51 +157,52 @@ const ListTodos = () => {
 
   return (
     <>
-      <Table sx={{ mt: 4 }}>
+    <TableContainer component={Paper}>
+    <Table sx={{ width: "100%" }}>
         <TableHead>
-          <TableRow>
-            <TableCell>Description</TableCell>
-            <TableCell>Owner</TableCell>
-            <TableCell>Priority</TableCell>
-            <TableCell>Day</TableCell>
-            <TableCell>Time</TableCell>
-            {/* <TableCell>Edit</TableCell>
-            <TableCell>Delete</TableCell>
-            <TableCell>Completed</TableCell> */}
-          </TableRow>
+          <StyledTableRow>
+            <StyledTableCell>Description</StyledTableCell>
+            <StyledTableCell>Owner</StyledTableCell>
+            <StyledTableCell>Priority</StyledTableCell>
+            <StyledTableCell>Day</StyledTableCell>
+            <StyledTableCell>Time</StyledTableCell>
+            <StyledTableCell>Edit</StyledTableCell>
+            <StyledTableCell>Delete</StyledTableCell>
+            <StyledTableCell>Completed</StyledTableCell>
+          </StyledTableRow>
         </TableHead>
         <TableBody>
         {(rowsPerPage > 0
               ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : todos
-            ).sort((a, b) => +a.completed - +b.completed)
-              .map((row: todoType) => (
-                <TableRow key={row.todo_id}>
-                  <TableCell
-                    // style={
-                    //   todo.completed ? { textDecoration: "line-through" } : {}
-                    // }
+            ).map((todo) => {
+              return (
+                <StyledTableRow key={todo.todo_id}>
+                  <StyledTableCell
+                    style={
+                      todo.completed ? { textDecoration: "line-through" } : {}
+                    }
                   >
-                    {row.description}
-                  </TableCell>
-                  <TableCell>
-                    {row.owner}
-                  </TableCell>
-                  <TableCell>
-                    {row.priority}
-                  </TableCell>
-                  <TableCell>
-                    {row.day}
-                  </TableCell>  
-                  <TableCell>
-                    {row.morning? 'Morning, ': ''} 
-                    {row.afternoon? 'Afternoon, ': ''} 
-                    {row.evening? 'Evening': ''}
-                  </TableCell>
-                  {/* <TableCell>
+                    {todo.description}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {todo.owner}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {todo.priority}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {todo.day}
+                  </StyledTableCell>  
+                  <StyledTableCell>
+                    {todo.morning? 'Morning, ': ''} 
+                    {todo.afternoon? 'Afternoon, ': ''} 
+                    {todo.evening? 'Evening': ''}
+                  </StyledTableCell>
+                  <StyledTableCell>
                     < EditTodo todo={todo} />
-                  </TableCell>
-                  <TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell>
                     <IconButton
                       component="button"
                       onClick={() => handleDelete(todo.todo_id)}
@@ -183,8 +210,8 @@ const ListTodos = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
-                   <TableCell>
+                  </StyledTableCell>
+                   <StyledTableCell>
                     <IconButton
                       component="button"
                       onClick={() => completeTodo(todo)}
@@ -193,17 +220,18 @@ const ListTodos = () => {
                     >
                       <DoneIcon />
                     </IconButton>
-                  </TableCell> */}
-                </TableRow>
-            ))}
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
             {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
+              <StyledTableRow style={{ height: 53 * emptyRows }}>
+                <StyledTableCell colSpan={6} />
+              </StyledTableRow>
             )}
         </TableBody>
         <TableFooter>
-            <TableRow>
+            <StyledTableRow>
               <TablePagination
                 rowsPerPageOptions={[6, 12, 18, { label: 'All', value: -1 }]}
                 colSpan={8}
@@ -220,9 +248,10 @@ const ListTodos = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
               />
-            </TableRow>
+            </StyledTableRow>
           </TableFooter>
       </Table>
+      </TableContainer>
     </>
   );
 };
