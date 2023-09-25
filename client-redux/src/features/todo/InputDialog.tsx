@@ -104,25 +104,25 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
   return (
     <>
         <Button 
-            onClick={handleClickOpen}
-            variant="contained" 
-            color="primary" 
-            style={{
-                backgroundColor: "green",
-                margin: "5px"
+          onClick={handleClickOpen}
+          variant="contained" 
+          color="primary" 
+          style={{
+            backgroundColor: "green",
+            margin: "5px"
         }}>
             + New Todo
         </Button>
         <Dialog open={open} onClose={handleClose}>
         <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-            }}
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
         >
         <CloseIcon />
         </IconButton>  
@@ -133,53 +133,53 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
         
         <Grid container alignItems="center" direction="column" >
             <TextField
-                autoFocus
-                id="description"
-                name="description"
-                type="text"
-                margin="normal"
-                label="Todo description"
-                variant="outlined"
-                sx={{ width: 400 }}
-                value={formValues.description}
-                onChange={handleInputChange}
+              autoFocus
+              id="description"
+              name="description"
+              type="text"
+              margin="normal"
+              label="Todo description"
+              variant="outlined"
+              sx={{ width: 400 }}
+              value={formValues.description}
+              onChange={handleInputChange}
             />
             <TextField
-                id="owner"
-                name="owner"
-                label="Enter owner"
-                type="text"
-                sx={{ width: 400 }}
-                
-                value={formValues.owner}
-                onChange={handleInputChange}
+              id="owner"
+              name="owner"
+              label="Enter owner"
+              type="text"
+              sx={{ width: 400 }}
+              
+              value={formValues.owner}
+              onChange={handleInputChange}
             />
             <br />
             <FormControl>
                 <FormLabel>Priority</FormLabel>
                 <RadioGroup
-                    name="priority"
-                    value={formValues.priority}
-                    onChange={handleInputChange}
-                    row
+                  name="priority"
+                  value={formValues.priority}
+                  onChange={handleInputChange}
+                  row
                 >
                 <FormControlLabel
-                    key="low"
-                    value="low"
-                    control={<Radio size="small" />}
-                    label="Low"
+                  key="low"
+                  value="low"
+                  control={<Radio size="small" />}
+                  label="Low"
                 />
                 <FormControlLabel
-                    key="medium"
-                    value="medium"
-                    control={<Radio size="small" />}
-                    label="Medium"
+                  key="medium"
+                  value="medium"
+                  control={<Radio size="small" />}
+                  label="Medium"
                 />
                 <FormControlLabel
-                    key="high"
-                    value="high"
-                    control={<Radio size="small" />}
-                    label="High"
+                  key="high"
+                  value="high"
+                  control={<Radio size="small" />}
+                  label="High"
                 />
             </RadioGroup>
           </FormControl>
@@ -250,8 +250,8 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
             color="primary" 
             type="submit" 
             style={{
-                backgroundColor: "green",
-                margin: "5px"
+              backgroundColor: "green",
+              margin: "5px"
             }}>
             Submit
           </Button>
@@ -260,14 +260,13 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
             variant="contained"
             color="error"
             style={{
-                backgroundColor: "error",
-                margin: "5px"
+              backgroundColor: "error",
+              margin: "5px"
             }}>
             Cancel
           </Button>
           </ Grid>
         </DialogActions>
-        
       </Dialog>
     </>
   );
