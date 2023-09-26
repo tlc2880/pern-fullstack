@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState}  from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { deleteTodo, updateTodo } from "./todoSlice";
+import EditTodo from "./EditTodo";
+import todoType from '../../types'
 import {
     Box,
     Table,
@@ -15,8 +17,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { StyledTableCell, StyledTableRow } from './StyledTable';
-import EditTodo from "./EditTodo";
-import todoType from '../../types'
 
 function createData(
     todo_id: string,
@@ -27,6 +27,7 @@ function createData(
     morning: boolean,
     afternoon: boolean,
     evening: boolean,
+    duration: string,
     completed: boolean
     ) {
       return {
@@ -38,11 +39,14 @@ function createData(
         morning,
         afternoon,
         evening,
+        duration,
         completed
     };
 }
   
-export default function Row(props: { row: ReturnType<typeof createData> }) {
+export default function Row(props: { 
+    row: ReturnType<typeof createData>
+  }) {
     const { row } = props;
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
@@ -57,7 +61,7 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
       dispatch(updateTodo(newTodo));
       window.location.reload();
     }
-  
+
     return (
         <>
           <StyledTableRow key={row.todo_id} sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -124,6 +128,7 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
                       <StyledTableRow>
                         <StyledTableCell>Day</StyledTableCell>
                         <StyledTableCell align="right">Time Range</StyledTableCell>
+                        <StyledTableCell align="right">Duration</StyledTableCell>
                       </StyledTableRow>
                     </TableHead>
                     <TableBody>
@@ -136,6 +141,9 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
                           {row.afternoon? 'Afternoon, ': ''} 
                           {row.evening? 'Evening': ''}
                         </StyledTableCell>
+                        <StyledTableCell align="right" style={{ width: 200 }}>                  
+                          {row.duration} 
+                      </StyledTableCell>
                       </StyledTableRow>
                     </TableBody>
                   </Table>
@@ -146,4 +154,3 @@ export default function Row(props: { row: ReturnType<typeof createData> }) {
       </>
     )
   }
-  
