@@ -17,7 +17,7 @@ function App() {
     <>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <Container maxWidth="md">
+        <Container maxWidth="xl">
           <h1 className="input-header" >PERN using Redux Toolkit, MUI, & Styled Table</h1>
           < InputDialog />
           < ListTodos />

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { updateTodo } from "./todoSlice";
 import { useAppDispatch,  } from "../../app/hooks";
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -30,18 +30,8 @@ import todoType from '../../types';
 type EditTodoProps = {
   todo: todoType;
 }
+
 const EditTodo = ( {todo}: EditTodoProps ) => {
-  const [newTodo, setNewTodo] = useState<todoType>({
-    todo_id: todo.todo_id,
-    owner: todo.owner,
-    description: todo.description,
-    completed: todo.completed,
-    day: todo.day,
-    priority: todo.priority,
-    morning: todo.morning,
-    afternoon: todo.afternoon,
-    evening: todo.evening,
-  });
   const [description, setDescription] = useState(todo.description);
   const [owner, setOwner] = useState(todo.owner);
   const [priority, setPriority] = useState(todo.priority);
@@ -52,25 +42,35 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
     afternoon: todo.afternoon,
     evening: todo.evening
   });
+  const [ duration, setDuration ] = useState(todo.duration);
 
   const dispatch = useAppDispatch();
 
   const handleEdit = (todo: todoType) => {
-    dispatch(updateTodo(newTodo));
+    dispatch(updateTodo({
+      ...todo,
+      owner,
+      description,
+      day,
+      priority,
+      morning,
+      afternoon,
+      evening,
+      duration
+    }));
     window.location.reload();
   };
 
   const handleDayChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
-    // eslint-disable-next-line 
-    setNewTodo({...newTodo, ['day']: event.target.value});
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime({ ...time, [event.target.name]: event.target.checked });
-    setNewTodo({ ...newTodo, [event.target.name]: event.target.checked });
   };
+
   const { morning, afternoon, evening } = time;
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,17 +106,18 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
         <CloseIcon />
         </IconButton>
         <DialogTitle>Edit Todo</DialogTitle>
-        <DialogContent sx={{ width: 800, maxWidth: "100%" }}>
+        <DialogContent>
+        <form onSubmit={() => handleEdit(todo)}>
+        <Grid container alignItems="center" direction="column">
           <TextField
             autoFocus
             margin="normal"
             label="Todo description"
             variant="outlined"
+            sx={{ width: 400 }}
             value={description}
             onChange={(event) => {
               setDescription(event.target.value);
-              // eslint-disable-next-line 
-              setNewTodo({...newTodo, ['description']: event.target.value});
             }}
           />
           <TextField
@@ -124,49 +125,46 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
             margin="normal"
             label="Todo owner"
             variant="outlined"
+            sx={{ width: 400 }}
             value={owner}
             onChange={(event) => {
               setOwner(event.target.value);
-              // eslint-disable-next-line 
-              setNewTodo({...newTodo, ['owner']: event.target.value});
             }}
           />
       
-            <FormControl>
-              <FormLabel>Priority</FormLabel>
-                <RadioGroup
-                  value={priority}
-                  onChange={(event) => {
-                    setPriority(event.target.value);
-                    // eslint-disable-next-line 
-                    setNewTodo({...newTodo, ['priority']: event.target.value});
-                  }}
-                  row
-                >
-                <FormControlLabel
-                  key="high"
-                  value="high"
-                  control={<Radio size="small" />}
-                  label="High"
-                />
-                <FormControlLabel
-                  key="medium"
-                  value="medium"
-                  control={<Radio size="small" />}
-                  label="Medium"
-                />
-                <FormControlLabel
-                  key="low"
-                  value="low"
-                  control={<Radio size="small" />}
-                  label="Low"
-                />
-              </RadioGroup>
-            </FormControl>
-
-            <Grid item>
+          <FormControl>
+            <FormLabel>Priority</FormLabel>
+              <RadioGroup
+                value={priority}
+                onChange={(event) => {
+                  setPriority(event.target.value);
+                }}
+                row
+              >
+              <FormControlLabel
+                key="low"
+                value="low"
+                control={<Radio size="small" />}
+                label="Low"
+              />
+              <FormControlLabel
+                key="medium"
+                value="medium"
+                control={<Radio size="small" />}
+                label="Medium"
+              />
+              <FormControlLabel
+                key="high"
+                value="high"
+                control={<Radio size="small" />}
+                label="High"
+              />
+            </RadioGroup>
+          </FormControl>
+          <br />
+            {/* <Grid item> */}
             <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
+              <FormControl>
                 <InputLabel id="demo-simple-select-label">Day</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -185,11 +183,9 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
                 </Select>
               </FormControl>
             </Box>
-          </Grid>
-
-          <Grid item>
-          <FormLabel>Time</FormLabel>
-          <FormGroup>
+            <br />
+            <FormLabel>Time Range</FormLabel>
+            <FormGroup>
               <FormControlLabel 
                 control={
                   <Checkbox 
@@ -217,12 +213,44 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
                   />}
                 label="Evening" 
               />
-          </FormGroup>
+            </FormGroup>
+            <TextField
+              autoFocus
+              margin="normal"
+              label="Todo duration"
+              variant="outlined"
+              sx={{ width: 400 }}
+              value={duration}
+              onChange={(event) => {
+                setDuration(event.target.value);
+              }}
+            />
+          {/* </Grid> */}
         </Grid>
-
+        </form >
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleEdit(todo)}>Save</Button>
+          <Button 
+            onClick={() => handleEdit(todo)}
+            variant="contained" 
+            color="primary" 
+            type="submit" 
+            style={{
+              backgroundColor: "green",
+              margin: "5px"
+            }}>
+            Submit
+          </Button>
+          <Button 
+            onClick={handleClose}
+            variant="contained"
+            color="error"
+            style={{
+              backgroundColor: "error",
+              margin: "5px"
+            }}>
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
     </>

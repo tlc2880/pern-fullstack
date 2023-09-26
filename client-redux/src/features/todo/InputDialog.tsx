@@ -1,4 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
+import { createTodo } from "./todoSlice";
+import { useAppDispatch } from "../../app/hooks";
 import {
     FormControl,
     FormLabel,
@@ -24,16 +26,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../../types'
 
-export default function InputDialog() {
-  const [open, setOpen] = useState(false);
-  const [ day, setDay ] = useState("Monday");
-  const [ time, setTime ] = useState({
-    morning: false,
-    afternoon: false,
-    evening: false
-  });
-
-  const initialValues = {
+const InputDialog = () => {
+    const initialValues = {
     todo_id: "",
     description: "",
     owner: "",
@@ -42,10 +36,18 @@ export default function InputDialog() {
     morning: false,
     afternoon: false,
     evening: false,
-    completed: false
+    completed: false,
+    duration: ""
   };
 
+  const [ open, setOpen ] = useState(false);
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
+  const [ day, setDay ] = useState("Monday");
+  const [ time, setTime ] = useState({
+    morning: true,
+    afternoon: false,
+    evening: false
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -54,108 +56,84 @@ export default function InputDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+  const dispatch = useAppDispatch();
 
-const onSubmitForm = async (event: React.SyntheticEvent) => {
+  const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const { description, owner, priority, day, morning, afternoon, evening } = formValues;
-    try {
-      const body = { description, owner, priority, day, morning, afternoon, evening };
-      await fetch("http://localhost:5000/todos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      // window.location.href = "/";
-      window.location.reload();
-    } catch (error: any) {
-      console.error(error.message);
-    }
-    handleClose();
-};
+    dispatch(createTodo(formValues));
+    window.location.reload();
+  };
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
-    setFormValues({
-      ...formValues,
-      // eslint-disable-next-line 
-      ['day']: event.target.value,
-    });
+    setFormValues({...formValues, [event.target.name]: event.target.value });
+  };
+
+  const handleCheckboxChange = (event: any) => {
+    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
+    setFormValues({...formValues, [event.target.name]: event.target.checked });
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
-    setFormValues({
-      ...formValues,
-      [event.target.name]: event.target.checked,
-    });
+    setFormValues({...formValues, [name]: value });
   };
 
   const { morning, afternoon, evening } = time;
 
   return (
     <>
-        <Button 
-          onClick={handleClickOpen}
-          variant="contained" 
-          color="primary" 
-          style={{
-            backgroundColor: "green",
-            margin: "5px"
+      <Button 
+        onClick={handleClickOpen}
+        variant="contained" 
+        color="primary" 
+        style={{
+          backgroundColor: "green",
+          margin: "5px"
         }}>
-            + New Todo
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-        <CloseIcon />
-        </IconButton>  
-        <DialogTitle>Input New Todo</DialogTitle>
-        <DialogContent>
+        + New Todo
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+      <CloseIcon />
+      </IconButton>  
+      <DialogTitle>Input New Todo</DialogTitle>
+      <DialogContent>
           
         <form onSubmit={onSubmitForm}>
-        
-        <Grid container alignItems="center" direction="column" >
+          <Grid container alignItems="center" direction="column">
+            <br />
             <TextField
               autoFocus
               id="description"
               name="description"
               type="text"
-              margin="normal"
-              label="Todo description"
-              variant="outlined"
+              label="Enter description"
               sx={{ width: 400 }}
               value={formValues.description}
               onChange={handleInputChange}
             />
+            <br />
             <TextField
               id="owner"
               name="owner"
               label="Enter owner"
               type="text"
               sx={{ width: 400 }}
-              
               value={formValues.owner}
               onChange={handleInputChange}
             />
             <br />
-            <FormControl>
+              <FormControl>
                 <FormLabel>Priority</FormLabel>
                 <RadioGroup
                   name="priority"
@@ -207,7 +185,7 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
           </Box>
 
           <br />
-          <FormLabel>Time</FormLabel>
+          <FormLabel>Time Range</FormLabel>
             <FormGroup>
               <FormControlLabel 
                 control={
@@ -218,7 +196,7 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
                   />} 
                 label="Morning" 
               />
-            <FormControlLabel 
+              <FormControlLabel 
                 control={
                   <Checkbox 
                     name="afternoon" 
@@ -238,6 +216,15 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
                 label="Evening" 
               />
             </FormGroup>
+              <TextField
+                id="duration"
+                name="duration"
+                label="Enter duration"
+                type="text"
+                sx={{ width: 400 }}
+                value={formValues.duration}
+                onChange={handleInputChange}
+              />
             </Grid>
           </form>
         </DialogContent>
@@ -245,7 +232,7 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
         <DialogActions>
         <Grid alignItems="center" >
           <Button 
-            onClick={(event) => onSubmitForm(event)}
+            onClick={onSubmitForm}
             variant="contained" 
             color="primary" 
             type="submit" 
@@ -271,3 +258,5 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
     </>
   );
 }
+
+export default InputDialog;
