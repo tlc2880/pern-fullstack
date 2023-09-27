@@ -1,4 +1,4 @@
-import React, { useState}  from "react";
+import React, { useState }  from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { deleteTodo, updateTodo } from "./todoSlice";
 import EditTodo from "./EditTodo";
@@ -30,17 +30,17 @@ function createData(
     duration: string,
     completed: boolean
     ) {
-      return {
-        todo_id,
-        description,
-        owner,
-        priority,
-        day,
-        morning,
-        afternoon,
-        evening,
-        duration,
-        completed
+    return {
+      todo_id,
+      description,
+      owner,
+      priority,
+      day,
+      morning,
+      afternoon,
+      evening,
+      duration,
+      completed
     };
 }
   
@@ -68,20 +68,18 @@ export default function Row(props: {
             <StyledTableCell component="th" scope="row">
               {row.todo_id}
             </StyledTableCell>
-            
             <StyledTableCell 
               style={
-                row.completed ? { textDecoration: "line-through", width: 450 } : { width: 450 }
+                row.completed ? { textDecoration: "line-through", width: 500 } : { width: 500 }
               }
               component="th" 
               scope="row"
             >
               {row.description}
             </StyledTableCell>
-  
-            <StyledTableCell align="right" style={{ width: 225 }}>{row.owner}</StyledTableCell>
-            <StyledTableCell align="right" style={{ width: 225 }}>{row.priority}</StyledTableCell>
-            <StyledTableCell align="right" style={{ width: 75 }}>
+            <StyledTableCell align="left" style={{ width: 300 }}>{row.owner}</StyledTableCell>
+            <StyledTableCell align="left" style={{ width: 150 }}>{row.priority}</StyledTableCell>
+            <StyledTableCell align="right" style={{ width: 100 }}>
               <IconButton
                 aria-label="expand row"
                 size="small"
@@ -92,28 +90,27 @@ export default function Row(props: {
             </StyledTableCell>
   
             <StyledTableCell style={{ width: 100 }} align="right">
-                < EditTodo todo={row} />
+              < EditTodo todo={row} />
             </StyledTableCell>
             <StyledTableCell style={{ width: 100 }} align="right">
             <IconButton
-                component="button"
-                onClick={() => handleDelete(row.todo_id)}
-                color="error"
+              component="button"
+              onClick={() => handleDelete(row.todo_id)}
+              color="error"
             >
-                <DeleteIcon />
+              <DeleteIcon />
             </IconButton>
             </StyledTableCell>
             <StyledTableCell  style={{ width: 100 }} align="right">
             <IconButton
-                component="button"
-                onClick={() => completeTodo(row)}
-                disabled={row.completed}
-                color="success"
+              component="button"
+              onClick={() => completeTodo(row)}
+              disabled={row.completed}
+              color="success"
             >
-                <DoneIcon />
+              <DoneIcon />
             </IconButton>
             </StyledTableCell>
-  
           </StyledTableRow>
   
           <StyledTableRow>
@@ -127,7 +124,7 @@ export default function Row(props: {
                     <TableHead>
                       <StyledTableRow>
                         <StyledTableCell>Day</StyledTableCell>
-                        <StyledTableCell align="right">Time Range</StyledTableCell>
+                        <StyledTableCell align="left">Time Range</StyledTableCell>
                         <StyledTableCell align="right">Duration</StyledTableCell>
                       </StyledTableRow>
                     </TableHead>
@@ -136,7 +133,7 @@ export default function Row(props: {
                         <StyledTableCell component="th" scope="row">
                           {row.day}
                         </StyledTableCell>
-                        <StyledTableCell align="right" style={{ width: 300 }}>                  
+                        <StyledTableCell align="left" style={{ width: 300 }}>                  
                           {row.morning? 'Morning, ': ''} 
                           {row.afternoon? 'Afternoon, ': ''} 
                           {row.evening? 'Evening': ''}
@@ -154,3 +151,4 @@ export default function Row(props: {
       </>
     )
   }
+  

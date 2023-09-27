@@ -93,63 +93,63 @@ const ListTodos = () => {
   };
 
   return (
-      <TableContainer component={Paper}>
-        <Table sx={{ width: "100%" }} aria-label="custom pagination table">
-          <TableHead>
-            <StyledTableRow>
-              <StyledTableCell align="right" onClick={handleNumberSort}>
-                <TableSortLabel active={true} direction={orderDirection}>
-                  Id
-                </TableSortLabel>
-              </StyledTableCell>
-              <StyledTableCell align="left">Description</StyledTableCell>
-              <StyledTableCell align="right" onClick={handleAlphaSort}>
-                <TableSortLabel active={true} direction={orderDirection}>
-                  Owner
-                </TableSortLabel>
-              </StyledTableCell>
-              <StyledTableCell align="right">Priority</StyledTableCell>
-              <StyledTableCell align="right">Time</StyledTableCell>
-              <StyledTableCell align="right">Edit</StyledTableCell>
-              <StyledTableCell align="right">Delete</StyledTableCell>
-              <StyledTableCell align="right">Completed</StyledTableCell>
+    <TableContainer component={Paper}>
+      <Table sx={{ width: "100%" }} aria-label="custom pagination table">
+        <TableHead>
+          <StyledTableRow>
+            <StyledTableCell align="right" onClick={handleNumberSort}>
+              <TableSortLabel active={true} direction={orderDirection}>
+                Id
+              </TableSortLabel>
+            </StyledTableCell>
+            <StyledTableCell align="left">Description</StyledTableCell>
+            <StyledTableCell align="right" onClick={handleAlphaSort}>
+              <TableSortLabel active={true} direction={orderDirection}>
+                Owner
+              </TableSortLabel>
+            </StyledTableCell>
+            <StyledTableCell align="right">Priority</StyledTableCell>
+            <StyledTableCell align="right">Time</StyledTableCell>
+            <StyledTableCell align="right">Edit</StyledTableCell>
+            <StyledTableCell align="right">Delete</StyledTableCell>
+            <StyledTableCell align="right">Completed</StyledTableCell>
+          </StyledTableRow>
+        </TableHead>
+        <TableBody>
+          {(rowsPerPage > 0
+            ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : todos
+          ).map((row: todoType) => (
+            <Row key={row.todo_id} row={row} setTodos={setTodos} todos={todos}/>
+          ))}
+          {emptyRows > 0 && (
+            <StyledTableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={4} />
             </StyledTableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : todos
-            ).map((row: todoType) => (
-              <Row key={row.todo_id} row={row} setTodos={setTodos} todos={todos}/>
-            ))}
-            {emptyRows > 0 && (
-              <StyledTableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={4} />
-              </StyledTableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <StyledTableRow>
-              <TablePagination
-                rowsPerPageOptions={[6, 12, 18, { label: 'All', value: -1 }]}
-                colSpan={8}
-                count={todos.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </StyledTableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+          )}
+        </TableBody>
+        <TableFooter>
+          <StyledTableRow>
+            <TablePagination
+              rowsPerPageOptions={[6, 12, 18, { label: 'All', value: -1 }]}
+              colSpan={8}
+              count={todos.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: {
+                  'aria-label': 'rows per page',
+                },
+                native: true,
+              }}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </StyledTableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
   );
 };
 

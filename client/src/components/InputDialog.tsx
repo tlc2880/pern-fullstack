@@ -104,155 +104,150 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
 
   return (
     <>
-        <Button 
-            onClick={handleClickOpen}
-            variant="contained" 
-            color="primary" 
-            style={{
-                backgroundColor: "green",
-                margin: "5px"
-        }}>
-            + New Todo
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-        <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-            }}
-        >
-        <CloseIcon />
-        </IconButton>  
-        <DialogTitle>Input New Todo</DialogTitle>
-        <DialogContent>
+      <Button 
+        onClick={handleClickOpen}
+        variant="contained" 
+        color="primary" 
+        style={{
+          backgroundColor: "green",
+          margin: "5px"
+      }}>
+        + New Todo
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+      <CloseIcon />
+      </IconButton>  
+      <DialogTitle>Input New Todo</DialogTitle>
+      <DialogContent>
           
-        <form onSubmit={onSubmitForm}>
-        
+      <form onSubmit={onSubmitForm}>
         <Grid container alignItems="center" direction="column" >
-            <TextField
-                autoFocus
-                id="description"
-                name="description"
-                type="text"
-                margin="normal"
-                label="Todo description"
-                variant="outlined"
-                sx={{ width: 400 }}
-                value={formValues.description}
-                onChange={handleInputChange}
+          <TextField
+            autoFocus
+            id="description"
+            name="description"
+            type="text"
+            margin="normal"
+            label="Todo description"
+            variant="outlined"
+            sx={{ width: 400 }}
+            value={formValues.description}
+            onChange={handleInputChange}
+          />
+          <TextField
+            id="owner"
+            name="owner"
+            label="Enter owner"
+            type="text"
+            sx={{ width: 400 }}
+            value={formValues.owner}
+            onChange={handleInputChange}
+          />
+          <FormControl>
+            <FormLabel>Priority</FormLabel>
+            <RadioGroup
+              name="priority"
+              value={formValues.priority}
+              onChange={handleInputChange}
+              row
+            >
+            <FormControlLabel
+              key="high"
+              value="high"
+              control={<Radio size="small" />}
+              label="High"
             />
-            <TextField
-                id="owner"
-                name="owner"
-                label="Enter owner"
-                type="text"
-                sx={{ width: 400 }}
-                
-                value={formValues.owner}
-                onChange={handleInputChange}
+            <FormControlLabel
+              key="medium"
+              value="medium"
+              control={<Radio size="small" />}
+              label="Medium"
             />
-            <br />
-            <FormControl>
-                <FormLabel>Priority</FormLabel>
-                <RadioGroup
-                    name="priority"
-                    value={formValues.priority}
-                    onChange={handleInputChange}
-                    row
-                >
-                <FormControlLabel
-                    key="low"
-                    value="low"
-                    control={<Radio size="small" />}
-                    label="Low"
-                />
-                <FormControlLabel
-                    key="medium"
-                    value="medium"
-                    control={<Radio size="small" />}
-                    label="Medium"
-                />
-                <FormControlLabel
-                    key="high"
-                    value="high"
-                    control={<Radio size="small" />}
-                    label="High"
-                />
-            </RadioGroup>
+            <FormControlLabel
+              key="low"
+              value="low"
+              control={<Radio size="small" />}
+              label="Low"
+            />
+          </RadioGroup>
+        </FormControl>
+
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl >
+            <InputLabel id="demo-simple-select-label">Day</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={day}
+              label="Day"
+              onChange={handleSelectChange}
+            >
+              <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
+              <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
+              <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
+              <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
+              <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
+              <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
+              <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
+            </Select>
           </FormControl>
+        </Box>
 
-          <br />
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl >
-              <InputLabel id="demo-simple-select-label">Day</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={day}
-                label="Day"
-                onChange={handleSelectChange}
-              >
-                <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
-                <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
-                <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
-                <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
-                <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
-                <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
-                <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-          <br />
-          <FormLabel>Time</FormLabel>
-            <FormGroup>
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="morning"
-                    onChange={handleCheckboxChange}
-                    checked = {morning}
-                  />} 
-                label="Morning" 
-              />
+        <FormLabel>Time</FormLabel>
+          <FormGroup>
             <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="afternoon" 
-                    onChange={handleCheckboxChange}
-                    checked={afternoon}
-                  />
-                } 
-                label="Afternoon" 
-              />
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="evening"  
-                    onChange={handleCheckboxChange}
-                    checked={evening}
-                  />}
-                label="Evening" 
-              />
-              <TextField
-                id="duration"
-                name="duration"
-                label="Enter duration"
-                type="text"
-                sx={{ width: 400 }}
-                value={formValues.duration}
-                onChange={handleInputChange}
+              control={
+                <Checkbox 
+                  name="morning"
+                  onChange={handleCheckboxChange}
+                  checked = {morning}
+                />} 
+              label="Morning" 
             />
-            </FormGroup>
-            </Grid>
-          </form>
-        </DialogContent>
+          <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="afternoon" 
+                  onChange={handleCheckboxChange}
+                  checked={afternoon}
+                />
+              } 
+              label="Afternoon" 
+            />
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="evening"  
+                  onChange={handleCheckboxChange}
+                  checked={evening}
+                />}
+              label="Evening" 
+            />
+          </FormGroup>
+            <TextField
+              id="duration"
+              name="duration"
+              label="Enter duration"
+              type="text"
+              sx={{ width: 400 }}
+              value={formValues.duration}
+              onChange={handleInputChange}
+            />
+          </Grid>
+        </form>
+      </DialogContent>
         
-        <DialogActions>
+      <DialogActions>
         <Grid alignItems="center" >
           <Button 
             onClick={(event) => onSubmitForm(event)}
@@ -260,8 +255,8 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
             color="primary" 
             type="submit" 
             style={{
-                backgroundColor: "green",
-                margin: "5px"
+              backgroundColor: "green",
+              margin: "5px"
             }}>
             Submit
           </Button>
@@ -270,14 +265,13 @@ const onSubmitForm = async (event: React.SyntheticEvent) => {
             variant="contained"
             color="error"
             style={{
-                backgroundColor: "error",
-                margin: "5px"
+              backgroundColor: "error",
+              margin: "5px"
             }}>
             Cancel
           </Button>
           </ Grid>
         </DialogActions>
-        
       </Dialog>
     </>
   );
