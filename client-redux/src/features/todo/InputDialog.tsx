@@ -1,43 +1,43 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from "react";
 import { createTodo } from "./todoSlice";
 import { useAppDispatch } from "../../app/hooks";
 import {
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControlLabel,
-    TextField,
-    Select,
-    MenuItem,
-    FormGroup,
-    Checkbox,
-    Button,
-    Box,
-    InputLabel,
-    Grid,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-  } from '@mui/material';
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  TextField,
+  Select,
+  MenuItem,
+  FormGroup,
+  Checkbox,
+  Button,
+  Box,
+  InputLabel,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../../types'
 
 const InputDialog = () => {
-    const initialValues = {
+  const initialValues = {
     todo_id: "",
     description: "",
     owner: "",
     priority: "low",
     day: "Monday",
-    morning: false,
+    morning: true,
     afternoon: false,
     evening: false,
     completed: false,
-    duration: ""
+    duration: ''
   };
 
   const [ open, setOpen ] = useState(false);
@@ -47,7 +47,7 @@ const InputDialog = () => {
     morning: true,
     afternoon: false,
     evening: false
-  });
+  })
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,6 +56,24 @@ const InputDialog = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setDay(event.target.value);
+    setFormValues({
+      ...formValues,
+      // eslint-disable-next-line 
+      ['day']: event.target.value,
+    });
+  };
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
+    setFormValues({
+      ...formValues,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
   const dispatch = useAppDispatch();
 
   const onSubmitForm = async (event: React.SyntheticEvent) => {
@@ -64,23 +82,15 @@ const InputDialog = () => {
     window.location.reload();
   };
 
-  const handleSelectChange = (event: SelectChangeEvent) => {
-    setDay(event.target.value);
-    setFormValues({...formValues, [event.target.name]: event.target.value });
-  };
-
-  const handleCheckboxChange = (event: any) => {
-    setTime({ ...time, [event.target.name]: event.target.checked as boolean });
-    setFormValues({...formValues, [event.target.name]: event.target.checked });
-  };
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValues({...formValues, [name]: value });
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
   };
 
   const { morning, afternoon, evening } = time;
-
   return (
     <>
       <Button 
@@ -109,69 +119,66 @@ const InputDialog = () => {
       <DialogTitle>Input New Todo</DialogTitle>
       <DialogContent>
           
-        <form onSubmit={onSubmitForm}>
-          <Grid container alignItems="center" direction="column">
-            <br />
-            <TextField
-              autoFocus
-              id="description"
-              name="description"
-              type="text"
-              label="Enter description"
-              sx={{ width: 400 }}
-              value={formValues.description}
-              onChange={handleInputChange}
-            />
-            <br />
-            <TextField
-              id="owner"
-              name="owner"
-              label="Enter owner"
-              type="text"
-              sx={{ width: 400 }}
-              value={formValues.owner}
-              onChange={handleInputChange}
-            />
-            <br />
-              <FormControl>
-                <FormLabel>Priority</FormLabel>
-                <RadioGroup
-                  name="priority"
-                  value={formValues.priority}
-                  onChange={handleInputChange}
-                  row
-                >
-                <FormControlLabel
-                  key="low"
-                  value="low"
-                  control={<Radio size="small" />}
-                  label="Low"
-                />
-                <FormControlLabel
-                  key="medium"
-                  value="medium"
-                  control={<Radio size="small" />}
-                  label="Medium"
-                />
-                <FormControlLabel
-                  key="high"
-                  value="high"
-                  control={<Radio size="small" />}
-                  label="High"
-                />
+      <form onSubmit={onSubmitForm}>
+        <Grid container alignItems="center" direction="column" >
+          <br />
+          <TextField
+            id="description"
+            name="description"
+            label="Enter description"
+            type="text"
+            value={formValues.description}
+            onChange={handleInputChange}
+          />
+       
+          <TextField
+            id="owner"
+            name="owner"
+            label="Enter owner"
+            type="text"
+            value={formValues.owner}
+            onChange={handleInputChange}
+          />
+          <br />
+          <FormControl>
+            <FormLabel>Priority</FormLabel>
+              <RadioGroup
+                name="priority"
+                value={formValues.priority}
+                onChange={handleInputChange}
+                row
+              >
+              <FormControlLabel
+                key="high"
+                value="high"
+                control={<Radio size="small" />}
+                label="High"
+              />
+              <FormControlLabel
+                key="medium"
+                value="medium"
+                control={<Radio size="small" />}
+                label="Medium"
+              />
+              <FormControlLabel
+                key="low"
+                value="low"
+                control={<Radio size="small" />}
+                label="Low"
+              />
             </RadioGroup>
           </FormControl>
 
           <br />
           <Box sx={{ minWidth: 120 }}>
-            <FormControl >
+            <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Day</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={day}
                 label="Day"
-                onChange={handleSelectChange}
+                onChange={handleChange}
               >
                 <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
                 <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
@@ -186,77 +193,75 @@ const InputDialog = () => {
 
           <br />
           <FormLabel>Time Range</FormLabel>
-            <FormGroup>
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="morning"
-                    onChange={handleCheckboxChange}
-                    checked = {morning}
-                  />} 
-                label="Morning" 
-              />
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="afternoon" 
-                    onChange={handleCheckboxChange}
-                    checked={afternoon}
-                  />
-                } 
-                label="Afternoon" 
-              />
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="evening"  
-                    onChange={handleCheckboxChange}
-                    checked={evening}
-                  />}
-                label="Evening" 
-              />
+          <FormGroup>
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="morning"
+                  onChange={handleCheckboxChange}
+                  checked = {morning}
+                />} 
+              label="Morning" 
+            />
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="afternoon" 
+                  onChange={handleCheckboxChange}
+                  checked={afternoon}
+                />} 
+              label="Afternoon" 
+            />
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="evening"  
+                  onChange={handleCheckboxChange}
+                  checked={evening}
+                />}
+              label="Evening" 
+            />
             </FormGroup>
-              <TextField
-                id="duration"
-                name="duration"
-                label="Enter duration"
-                type="text"
-                sx={{ width: 400 }}
-                value={formValues.duration}
-                onChange={handleInputChange}
-              />
-            </Grid>
-          </form>
+            <TextField
+              id="duration"
+              name="duration"
+              label="Enter duration"
+              type="text"
+              sx={{ width: 400 }}
+              value={formValues.duration}
+              onChange={handleInputChange}
+            />
+          </Grid>
+        </form>
         </DialogContent>
         
         <DialogActions>
-        <Grid alignItems="center" >
-          <Button 
-            onClick={onSubmitForm}
-            variant="contained" 
-            color="primary" 
-            type="submit" 
-            style={{
-              backgroundColor: "green",
-              margin: "5px"
-            }}>
-            Submit
-          </Button>
-          <Button 
-            onClick={handleClose}
-            variant="contained"
-            color="error"
-            style={{
-              backgroundColor: "error",
-              margin: "5px"
-            }}>
-            Cancel
-          </Button>
+          <Grid alignItems="center" >
+            <Button 
+              onClick={onSubmitForm}
+              variant="contained" 
+              color="primary" 
+              type="submit" 
+              style={{
+                backgroundColor: "green",
+                margin: "5px"
+              }}>
+              Submit
+            </Button>
+            <Button 
+              onClick={handleClose}
+              variant="contained"
+              color="error"
+              style={{
+                backgroundColor: "error",
+                margin: "5px"
+              }}>
+              Cancel
+            </Button>
           </ Grid>
         </DialogActions>
       </Dialog>
     </>
   );
 }
-
 export default InputDialog;

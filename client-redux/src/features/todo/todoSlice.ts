@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import todoType from '../../types'
 
 const baseURL = "http://localhost:5000";
@@ -17,7 +17,7 @@ export const getTodos: any = createAsyncThunk("todos/getTodos", async () => {
   try {
     const response = await axios.get(`${baseURL}/todos`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return error.response.data.message;
   }
 });
@@ -40,7 +40,7 @@ export const createTodo: any = createAsyncThunk(
     try {
       const response = await axios.post( `${baseURL}/todos`, todo );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
   }
@@ -52,7 +52,7 @@ export const updateTodo: any = createAsyncThunk(
     try {
       const response = await axios.put( `${baseURL}/todos/${todo.todo_id}`, todo );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
   }
@@ -61,9 +61,39 @@ export const updateTodo: any = createAsyncThunk(
 const todoSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {},
+  reducers: {
+    sortAlphaTodos: (state, action: PayloadAction<string>) => {
+      const sortData = [...state.todos];
+      sortData.sort((a: todoType, b: todoType) => {
+          if (action.payload === 'asc') {
+          return a.owner.localeCompare(b.owner);
+        } else {
+          return b.owner.localeCompare(a.owner);
+        }
+      });
+      state.todos = [...sortData];
+    },
+
+    sortNumTodos: (state, action: PayloadAction<string>) => {
+      let sortData = [...state.todos];
+      switch (action.payload) {
+        case "asc":
+        default:
+          sortData.sort((a: todoType, b: todoType) =>
+            a.todo_id > b.todo_id ? 1 : b.todo_id > a.todo_id ? -1 : 0
+          );
+          break;
+        case "desc":
+          sortData.sort((a: todoType, b: todoType) =>
+            a.todo_id < b.todo_id ? 1 : b.todo_id < a.todo_id ? -1 : 0
+          );
+      }
+      state.todos = [...sortData];
+    }
+  },
+
   extraReducers: {
-    [getTodos.pending]: (state, action) => {
+    [getTodos.pending]: (state) => {
       return {
         ...state,
         responseStatus: "pending",
@@ -98,7 +128,7 @@ const todoSlice = createSlice({
         responseMessage: action.payload,
       };
     },
-    [updateTodo.pending]: (state, action) => {
+    [updateTodo.pending]: (state) => {
       return {
         ...state,
         responseStatus: "pending",
@@ -121,7 +151,7 @@ const todoSlice = createSlice({
         responseMessage: action.payload,
       };
     },
-    [createTodo.pending]: (state, action) => {
+    [createTodo.pending]: (state) => {
       return {
         ...state,
         responseStatus: "pending",
@@ -146,3 +176,4 @@ const todoSlice = createSlice({
 });
 
 export default todoSlice.reducer;
+export const { sortNumTodos, sortAlphaTodos } = todoSlice.actions;

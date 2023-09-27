@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import InputDialog from "./features/todo/InputDialog";
@@ -18,7 +18,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
-          <h1 className="input-header" >PERN using Redux Toolkit, MUI, & Styled Table</h1>
+          <h1 className="input-header" >PERN using Redux Toolkit with Async Thunk, MUI, & Styled Table</h1>
           < InputDialog />
           < ListTodos />
         </Container>
@@ -26,4 +26,5 @@ function App() {
     </>
   );
 }
+
 export default App;

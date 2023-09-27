@@ -56,6 +56,11 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
       morning,
       afternoon,
       evening,
+      timeRange: {
+        morning,
+        afternoon,
+        evening,
+      },
       duration
     }));
     window.location.reload();
@@ -93,45 +98,46 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
         open={open}
         onClose={handleClose}
       >
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        
+      <CloseIcon />
+      </IconButton>
+      <DialogTitle>Edit Todo</DialogTitle>
+      <DialogContent>
+      <form onSubmit={() => handleEdit(todo)}>
+      <Grid container alignItems="center" direction="column">
+        <TextField
+          autoFocus
+          margin="normal"
+          label="Todo description"
+          variant="outlined"
+          sx={{ width: 400 }}
+          value={description}
+          onChange={(event) => {
+            setDescription(event.target.value);
           }}
-        >
-        <CloseIcon />
-        </IconButton>
-        <DialogTitle>Edit Todo</DialogTitle>
-        <DialogContent>
-        <form onSubmit={() => handleEdit(todo)}>
-        <Grid container alignItems="center" direction="column">
-          <TextField
-            autoFocus
-            margin="normal"
-            label="Todo description"
-            variant="outlined"
-            sx={{ width: 400 }}
-            value={description}
-            onChange={(event) => {
-              setDescription(event.target.value);
-            }}
-          />
-          <TextField
-            autoFocus
-            margin="normal"
-            label="Todo owner"
-            variant="outlined"
-            sx={{ width: 400 }}
-            value={owner}
-            onChange={(event) => {
-              setOwner(event.target.value);
-            }}
-          />
-      
+        />
+        <TextField
+          autoFocus
+          margin="normal"
+          label="Todo owner"
+          variant="outlined"
+          sx={{ width: 400 }}
+          value={owner}
+          onChange={(event) => {
+            setOwner(event.target.value);
+          }}
+        />
+    
           <FormControl>
             <FormLabel>Priority</FormLabel>
               <RadioGroup
