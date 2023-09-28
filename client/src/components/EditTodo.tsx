@@ -141,10 +141,10 @@ const EditTodo = ( {todo} : EditTodoProps) => {
                 row
               >
               <FormControlLabel
-                key="high"
-                value="high"
+                key="low"
+                value="low"
                 control={<Radio size="small" />}
-                label="High"
+                label="Low"
               />
               <FormControlLabel
                 key="medium"
@@ -153,13 +153,15 @@ const EditTodo = ( {todo} : EditTodoProps) => {
                 label="Medium"
               />
               <FormControlLabel
-                key="low"
-                value="low"
+                key="high"
+                value="high"
                 control={<Radio size="small" />}
-                label="Low"
+                label="High"
               />
             </RadioGroup>
           </FormControl>
+          <br />
+            <Grid item>
             <Box sx={{ minWidth: 120 }}>
               <FormControl>
                 <InputLabel id="demo-simple-select-label">Day</InputLabel>
@@ -180,7 +182,10 @@ const EditTodo = ( {todo} : EditTodoProps) => {
                 </Select>
               </FormControl>
             </Box>
-          <FormLabel>Time Range</FormLabel>
+          </Grid>
+
+          <Grid item>
+          <FormLabel>Time</FormLabel>
           <FormGroup>
               <FormControlLabel 
                 control={
@@ -221,6 +226,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
               setDuration(event.target.value);
             }}
           />
+          </Grid>
         </Grid>
         </form >
         </DialogContent>
@@ -231,8 +237,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             color="primary" 
             type="submit" 
             style={{
-              backgroundColor: "green",
-              margin: "5px"
+                backgroundColor: "green",
+                margin: "5px"
             }}>
             Submit
           </Button>
@@ -241,8 +247,8 @@ const EditTodo = ( {todo} : EditTodoProps) => {
             variant="contained"
             color="error"
             style={{
-              backgroundColor: "error",
-              margin: "5px"
+                backgroundColor: "error",
+                margin: "5px"
             }}>
             Cancel
           </Button>
