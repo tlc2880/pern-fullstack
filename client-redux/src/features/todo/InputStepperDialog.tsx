@@ -14,7 +14,6 @@ import { useAppDispatch } from "../../app/hooks";import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Box,
   InputLabel,
   Select,
   MenuItem,
@@ -55,7 +54,7 @@ export default function InputStepperDialog() {
 
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
 
-  const steps = ["Step 1", "Step 2", "Step 3"];
+  const steps = ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7"];
   const dispatch = useAppDispatch();
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,7 +78,6 @@ export default function InputStepperDialog() {
     window.location.reload();
   };
 
-  
   const handleSelectChange = (event: SelectChangeEvent) => {
     setDay(event.target.value);
     setFormValues({
@@ -117,7 +115,7 @@ export default function InputStepperDialog() {
         }}
         onClick={handleClickOpen}
       >
-        + New Stepper Todo
+        + New Todo Stepper
       </Button>
       <IconButton
         aria-label="close"
@@ -132,7 +130,7 @@ export default function InputStepperDialog() {
         <CloseIcon />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Stepper Todo Input</DialogTitle>
+        <DialogTitle>New Todo Stepper Input</DialogTitle>
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
@@ -140,200 +138,258 @@ export default function InputStepperDialog() {
             </Step>
           ))}
         </Stepper>
-        <DialogContent>
+        <DialogContent >
         <form onSubmit={onSubmitForm}>
-          <Container maxWidth="md" sx={{ mt: 8 }}>
-            <Grid container direction="column" alignItems="center" spacing={2}>
-              <Grid item xs={12}>
-                {activeStep === 0 && (
-                  <>
-                    <Typography variant="h6">Step 1</Typography>
-                    <br />
-                    <TextField
-                      autoFocus
-                      id="description"
-                      type="text"
-                      margin="normal"
-                      label="Todo description"
-                      name="description"
-                      value={formValues.description}
+        <Grid container alignItems="center" direction="column" spacing={1}  >
+          <Container maxWidth="md" >
+            {activeStep === 0 && (
+              <>
+                <Typography variant="h6">Step 1</Typography>
+                <br />
+                <TextField
+                  autoFocus
+                  id="description"
+                  type="text"
+                  margin="normal"
+                  label="Todo description"
+                  name="description"
+                  value={formValues.description}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+                <br />
+                <br />
+              </>
+            )}
+
+            {activeStep === 1 && (
+              <>
+                <Typography variant="h6">Step 2</Typography>
+                <br />
+                <TextField
+                  id="owner"
+                  label="Enter owner"
+                  name="owner"
+                  value={formValues.owner}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                />
+                <br />
+                <br />
+              </>
+            )}
+
+            {activeStep === 2 && (
+              <>
+                <Typography variant="h6">Step 3</Typography>
+                <br />
+                <FormControl>
+                  <FormLabel>Priority</FormLabel>
+                    <RadioGroup
+                      name="priority"
+                      value={formValues.priority}
                       onChange={handleInputChange}
-                      fullWidth
-                    />
-                    <TextField
-                      id="owner"
-                      label="Enter owner"
-                      name="owner"
-                      value={formValues.owner}
-                      onChange={handleInputChange}
-                      fullWidth
-                      margin="normal"
-                    />
-                  </>
-                )}
-                {activeStep === 1 && (
-                  <>
-                  <Grid alignItems="center" direction="column" >
-                  <Typography variant="h6">Step 2</Typography>
-                    <br />
-                    <Box sx={{ minWidth: 400 }}>
-                      <FormControl>
-                        <FormLabel>Priority</FormLabel>
-                          <RadioGroup
-                            name="priority"
-                            value={formValues.priority}
-                            onChange={handleInputChange}
-                            row
-                          >
-                          <FormControlLabel
-                            key="low"
-                            value="low"
-                            control={<Radio size="small" />}
-                            label="Low"
-                          />
-                          <FormControlLabel
-                            key="medium"
-                            value="medium"
-                            control={<Radio size="small" />}
-                            label="Medium"
-                          />
-                          <FormControlLabel
-                            key="high"
-                            value="high"
-                            control={<Radio size="small" />}
-                            label="High"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                      <FormControl sx={{ m: 1, minWidth: 400 }}>
-                        <InputLabel id="demo-simple-select-label">
-                          Day
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={day}
-                          label="Day"
-                          onChange={handleSelectChange}
-                        >
-                        <MenuItem key={"Monday"} value={"Monday"}>
-                          Monday
-                        </MenuItem>
-                        <MenuItem key={"Tuesday"} value={"Tuesday"}>
-                          Tuesday
-                        </MenuItem>
-                        <MenuItem key={"Wednesday"} value={"Wednesday"}>
-                          Wednesday
-                        </MenuItem>
-                        <MenuItem key={"Thursday"} value={"Thursday"}>
-                          Thursday
-                        </MenuItem>
-                        <MenuItem key={"Friday"} value={"Friday"}>
-                          Friday
-                        </MenuItem>
-                        <MenuItem key={"Saturday"} value={"Saturday"}>
-                          Saturday
-                        </MenuItem>
-                        <MenuItem key={"Sunday"} value={"Sunday"}>
-                          Sunday
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Box>
-                  </Grid>
-                </>
-              )}
-              {activeStep === 2 && (
-                <>
-                  <Typography variant="h6">Step 3</Typography>
-                  <br />
-                  <Grid alignItems="center" direction="column" >
-                  <FormLabel>Time Range</FormLabel>
-                  <FormGroup>
+                      row
+                    >
                     <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="morning"
-                          onChange={handleCheckboxChange}
-                          checked = {morning}
-                        />
-                      }
-                      label="Morning"
+                      key="low"
+                      value="low"
+                      control={<Radio size="small" />}
+                      label="Low"
                     />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            name="afternoon"
-                            onChange={handleCheckboxChange}
-                            checked={afternoon}
-                          />
-                        }
-                        label="Afternoon"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            name="evening"
-                            onChange={handleCheckboxChange}
-                            checked={evening}
-                          />
-                        }
-                        label="Evening"
-                      />
-                    <TextField
-                      id="duration"
-                      name="duration"
-                      label="Enter duration"
-                      type="text"
-                      sx={{ width: 400 }}
-                      value={formValues.duration}
-                      onChange={handleInputChange}
+                    <FormControlLabel
+                      key="medium"
+                      value="medium"
+                      control={<Radio size="small" />}
+                      label="Medium"
                     />
-                  </FormGroup>
-                  </Grid>
-                 
-                </>
-              )}
-              </Grid>
-              <Grid item xs={12}>
-                {activeStep > 0 && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleBack}
-                    sx={{ marginRight: 8 }}
-                  >
-                    Back
-                  </Button>
-                )}
-                {activeStep === steps.length - 1 ? (
-                  <>
-                    <Button 
-                      variant="contained"
-                      color="primary"
-                      onClick={onSubmitForm}
-                      style={{
-                        backgroundColor: "green",
-                        margin: "5px"
-                      }}
+                    <FormControlLabel
+                      key="high"
+                      value="high"
+                      control={<Radio size="small" />}
+                      label="High"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <br />
+                <br />
+              </>
+            )}
+
+            {activeStep === 3 && (
+              <>
+                <Typography variant="h6">Step 4</Typography>
+                  <br />
+                  <FormControl sx={{ m: 1, minWidth: 400 }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Day
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={day}
+                      label="Day"
+                      onChange={handleSelectChange}
                     >
-                      Submit
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button 
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                    >
-                      Next
-                    </Button>
-                  </>
-                )}
-              </Grid>
-            </Grid>
+                    <MenuItem key={"Monday"} value={"Monday"}>
+                      Monday
+                    </MenuItem>
+                    <MenuItem key={"Tuesday"} value={"Tuesday"}>
+                      Tuesday
+                    </MenuItem>
+                    <MenuItem key={"Wednesday"} value={"Wednesday"}>
+                      Wednesday
+                    </MenuItem>
+                    <MenuItem key={"Thursday"} value={"Thursday"}>
+                      Thursday
+                    </MenuItem>
+                    <MenuItem key={"Friday"} value={"Friday"}>
+                      Friday
+                    </MenuItem>
+                    <MenuItem key={"Saturday"} value={"Saturday"}>
+                      Saturday
+                    </MenuItem>
+                    <MenuItem key={"Sunday"} value={"Sunday"}>
+                      Sunday
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <br />
+                <br />
+              </>
+            )}
+
+            {activeStep === 4 && (
+              <>
+                <Typography variant="h6">Step 5</Typography>
+                <br />
+                <FormLabel>Time Range</FormLabel>
+                <FormGroup >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="morning"
+                        onChange={handleCheckboxChange}
+                        checked = {morning}
+                      />
+                    }
+                    label="Morning"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="afternoon"
+                        onChange={handleCheckboxChange}
+                        checked={afternoon}
+                      />
+                    }
+                    label="Afternoon"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name="evening"
+                        onChange={handleCheckboxChange}
+                        checked={evening}
+                      />
+                    }
+                    label="Evening"
+                  />
+                </FormGroup>
+                <br />
+              </>
+            )}
+
+            {activeStep === 5 && (
+              <>
+                <Typography variant="h6">Step 6</Typography>
+                <br/>
+                  <TextField
+                    id="duration"
+                    name="duration"
+                    label="Enter duration"
+                    type="text"
+                    sx={{ width: 400 }}
+                    value={formValues.duration}
+                    onChange={handleInputChange}
+                    fullWidth
+                  />
+                  <br />
+                  <br />
+              </>
+            )}
+
+            {activeStep === 6 && (
+              <>
+                <br/>
+                <Grid container alignItems="left" direction="column" spacing={1} >
+                  <Typography variant="h6">Step 7</Typography>
+                  <Typography variant="h6">Preview</Typography>
+                  <br/>
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Description: {formValues.description}
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Owner: {formValues.owner}
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Priority: {formValues.priority}
+                  </Typography> 
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Day: {formValues.day}
+                  </Typography> 
+                  
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Time Range: {formValues.morning? 'Morning, ': ''} 
+                      {formValues.afternoon? 'Afternoon, ': ''} 
+                      {formValues.evening? 'Evening': ''}
+                  </Typography>       
+                  <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
+                    Duration: {formValues.duration}
+                  </Typography> 
+                  <br/>
+                </Grid>
+              </>
+            )}
+
+            {activeStep > 0 && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleBack}
+                sx={{ marginRight: 8 }}
+              >
+                Back
+              </Button>
+            )}
+            {activeStep === steps.length - 1 ? (
+              <>
+                <Button 
+                  variant="contained"
+                  color="primary"
+                  onClick={onSubmitForm}
+                  style={{
+                    backgroundColor: "green",
+                    margin: "5px"
+                  }}
+                >
+                  Submit
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              </>
+            )}
           </Container>
+          </Grid>
           </form>
         </DialogContent>
         <DialogActions>
