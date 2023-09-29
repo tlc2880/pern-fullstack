@@ -56,11 +56,6 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
       morning,
       afternoon,
       evening,
-      timeRange: {
-        morning,
-        afternoon,
-        evening,
-      },
       duration
     }));
     window.location.reload();
@@ -108,7 +103,6 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
           color: (theme) => theme.palette.grey[500],
         }}
       >
-        
       <CloseIcon />
       </IconButton>
       <DialogTitle>Edit Todo</DialogTitle>
@@ -137,7 +131,6 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
             setOwner(event.target.value);
           }}
         />
-    
           <FormControl>
             <FormLabel>Priority</FormLabel>
               <RadioGroup
@@ -168,70 +161,68 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
             </RadioGroup>
           </FormControl>
           <br />
-            {/* <Grid item> */}
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl>
-                <InputLabel id="demo-simple-select-label">Day</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={day}
-                  label="Day"
-                  onChange={handleDayChange}
-                >
-                  <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
-                  <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
-                  <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
-                  <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
-                  <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
-                  <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
-                  <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-            <br />
-            <FormLabel>Time Range</FormLabel>
-            <FormGroup>
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="morning"
-                    onChange={handleCheckboxChange}
-                    checked = {morning}
-                  />} 
-                label="Morning" 
-              />
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="afternoon" 
-                    onChange={handleCheckboxChange}
-                    checked={afternoon}
-                  />} 
-                label="Afternoon" 
-              />
-              <FormControlLabel 
-                control={
-                  <Checkbox 
-                    name="evening"  
-                    onChange={handleCheckboxChange}
-                    checked={evening}
-                  />}
-                label="Evening" 
-              />
-            </FormGroup>
-            <TextField
-              autoFocus
-              margin="normal"
-              label="Todo duration"
-              variant="outlined"
-              sx={{ width: 400 }}
-              value={duration}
-              onChange={(event) => {
-                setDuration(event.target.value);
-              }}
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl>
+              <InputLabel id="demo-simple-select-label">Day</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={day}
+                label="Day"
+                onChange={handleDayChange}
+              >
+                <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
+                <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
+                <MenuItem key={"Wednesday"} value={"Wednesday"}>Wednesday</MenuItem>
+                <MenuItem key={"Thursday"} value={"Thursday"}>Thursday</MenuItem>
+                <MenuItem key={"Friday"} value={"Friday"}>Friday</MenuItem>
+                <MenuItem key={"Saturday"} value={"Saturday"}>Saturday</MenuItem>
+                <MenuItem key={"Sunday"} value={"Sunday"}>Sunday</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <br />
+          <FormLabel>Time Range</FormLabel>
+          <FormGroup>
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="morning"
+                  onChange={handleCheckboxChange}
+                  checked = {morning}
+                />} 
+              label="Morning" 
             />
-          {/* </Grid> */}
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="afternoon" 
+                  onChange={handleCheckboxChange}
+                  checked={afternoon}
+                />} 
+              label="Afternoon" 
+            />
+            <FormControlLabel 
+              control={
+                <Checkbox 
+                  name="evening"  
+                  onChange={handleCheckboxChange}
+                  checked={evening}
+                />}
+              label="Evening" 
+            />
+          </FormGroup>
+          <TextField
+            autoFocus
+            margin="normal"
+            label="Todo duration"
+            variant="outlined"
+            sx={{ width: 400 }}
+            value={duration}
+            onChange={(event) => {
+              setDuration(event.target.value);
+            }}
+          />
         </Grid>
         </form >
         </DialogContent>
