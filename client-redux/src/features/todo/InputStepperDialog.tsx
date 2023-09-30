@@ -22,17 +22,19 @@ import { useAppDispatch } from "../../app/hooks";import {
   DialogActions,
   DialogContent,
   FormGroup,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../../types'
 
 export default function InputStepperDialog() {
-  const [open, setOpen] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  const [ day, setDay ] = useState("Monday");
+  const [ open, setOpen ] = useState(false);
+  const [ descriptionError, setDescriptionError ] = useState(false);
+  const [ durationError, setDurationError ] = useState(false);
+  const [ activeStep, setActiveStep ] = useState(0);
+  const [ day, setDay ] = useState("");
   const [ time, setTime ] = useState({
     morning: false,
     afternoon: false,
@@ -43,8 +45,8 @@ export default function InputStepperDialog() {
     todo_id: "",
     description: "",
     owner: "",
-    priority: "low",
-    day: "Monday",
+    priority: "Low",
+    day: "",
     morning: false,
     afternoon: false,
     evening: false,
@@ -74,8 +76,23 @@ export default function InputStepperDialog() {
 
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(createTodo(formValues));
-    window.location.reload();
+    setDescriptionError(false);
+    setDurationError(false);
+
+    if (formValues.description === '') {
+      setDescriptionError(true);
+    }
+    if (formValues.duration === '') {
+      setDurationError(true);
+    }
+    if (
+      formValues.description &&
+      formValues.duration
+    ) {
+        dispatch(createTodo(formValues));
+        window.location.reload();
+        setFormValues(initialValues)
+      }
   };
 
   const handleSelectChange = (event: SelectChangeEvent) => {
@@ -139,7 +156,7 @@ export default function InputStepperDialog() {
           ))}
         </Stepper>
         <DialogContent >
-        <form onSubmit={onSubmitForm}>
+        <form noValidate onSubmit={onSubmitForm}>
         <Grid container alignItems="center" direction="column" spacing={1}  >
           <Container maxWidth="md" >
             {activeStep === 0 && (
@@ -156,6 +173,9 @@ export default function InputStepperDialog() {
                   value={formValues.description}
                   onChange={handleInputChange}
                   fullWidth
+                  required
+                  error={descriptionError}
+                  
                 />
                 <br />
                 <br />
@@ -186,27 +206,27 @@ export default function InputStepperDialog() {
                 <br />
                 <FormControl>
                   <FormLabel>Priority</FormLabel>
-                    <RadioGroup
-                      name="priority"
-                      value={formValues.priority}
-                      onChange={handleInputChange}
-                      row
-                    >
+                  <RadioGroup
+                    name="priority"
+                    value={formValues.priority}
+                    onChange={handleInputChange}
+                    row
+                  >
                     <FormControlLabel
-                      key="low"
-                      value="low"
+                      key="Low"
+                      value="Low"
                       control={<Radio size="small" />}
                       label="Low"
                     />
                     <FormControlLabel
-                      key="medium"
-                      value="medium"
+                      key="Medium"
+                      value="Medium"
                       control={<Radio size="small" />}
                       label="Medium"
                     />
                     <FormControlLabel
-                      key="high"
-                      value="high"
+                      key="High"
+                      value="High"
                       control={<Radio size="small" />}
                       label="High"
                     />
@@ -222,12 +242,12 @@ export default function InputStepperDialog() {
                 <Typography variant="h6">Step 4</Typography>
                   <br />
                   <FormControl sx={{ m: 1, minWidth: 400 }}>
-                    <InputLabel id="demo-simple-select-label">
+                    <InputLabel id="simple-select-label">
                       Day
                     </InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
+                      labelId="simple-select-label"
+                      id="simple-select"
                       value={day}
                       label="Day"
                       onChange={handleSelectChange}
@@ -311,6 +331,8 @@ export default function InputStepperDialog() {
                     label="Enter duration"
                     type="text"
                     sx={{ width: 400 }}
+                    required
+                    error={durationError}
                     value={formValues.duration}
                     onChange={handleInputChange}
                     fullWidth

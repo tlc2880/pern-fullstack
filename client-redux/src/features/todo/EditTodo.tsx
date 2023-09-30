@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import { updateTodo } from "./todoSlice";
 import { useAppDispatch,  } from "../../app/hooks";
 import { SelectChangeEvent } from '@mui/material/Select';
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -23,7 +18,12 @@ import {
   Checkbox,
   Button,
   Box,
-  Grid
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton
 } from '@mui/material';
 import todoType from '../../types';
 
@@ -141,20 +141,20 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
                 row
               >
               <FormControlLabel
-                key="low"
-                value="low"
+                key="Low"
+                value="Low"
                 control={<Radio size="small" />}
                 label="Low"
               />
               <FormControlLabel
-                key="medium"
-                value="medium"
+                key="Medium"
+                value="Medium"
                 control={<Radio size="small" />}
                 label="Medium"
               />
               <FormControlLabel
-                key="high"
-                value="high"
+                key="High"
+                value="High"
                 control={<Radio size="small" />}
                 label="High"
               />
@@ -163,10 +163,10 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
           <br />
           <Box sx={{ minWidth: 120 }}>
             <FormControl>
-              <InputLabel id="demo-simple-select-label">Day</InputLabel>
+              <InputLabel id="simple-select-label">Day</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="simple-select-label"
+                id="simple-select"
                 value={day}
                 label="Day"
                 onChange={handleDayChange}
