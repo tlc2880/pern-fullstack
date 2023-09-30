@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, SyntheticEvent } from "react";
 import { createTodo } from "./todoSlice";
 import { useAppDispatch } from "../../app/hooks";
 import {
@@ -16,12 +16,12 @@ import {
   Box,
   InputLabel,
   Grid,
+  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { SelectChangeEvent } from '@mui/material/Select';
 import todoType from '../../types'
@@ -31,9 +31,9 @@ const InputDialog = () => {
     todo_id: "",
     description: "",
     owner: "",
-    priority: "low",
-    day: "Monday",
-    morning: true,
+    priority: "Low",
+    day: "",
+    morning: false,
     afternoon: false,
     evening: false,
     completed: false,
@@ -42,9 +42,12 @@ const InputDialog = () => {
 
   const [ open, setOpen ] = useState(false);
   const [ formValues, setFormValues ] = useState<todoType>(initialValues);
-  const [ day, setDay ] = useState("Monday");
+  const [ descriptionError, setDescriptionError ] = useState(false);
+  const [ ownerError, setOwnerError ] = useState(false);
+  const [ durationError, setDurationError ] = useState(false);
+  const [ dayError, setDayError ] = useState(false);
   const [ time, setTime ] = useState({
-    morning: true,
+    morning: false,
     afternoon: false,
     evening: false
   })
@@ -58,7 +61,6 @@ const InputDialog = () => {
   };
 
   const handleChange = (event: SelectChangeEvent) => {
-    setDay(event.target.value);
     setFormValues({
       ...formValues,
       // eslint-disable-next-line 
@@ -76,10 +78,36 @@ const InputDialog = () => {
 
   const dispatch = useAppDispatch();
 
-  const onSubmitForm = async (event: React.SyntheticEvent) => {
+  const onSubmitForm = async (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch(createTodo(formValues));
-    window.location.reload();
+    setDescriptionError(false);
+    setOwnerError(false);
+    setDurationError(false);
+    setDayError(false);
+
+    if (formValues.description === '') {
+      setDescriptionError(true);
+    }
+    if (formValues.owner === '') {
+      setOwnerError(true);
+    }
+    if (formValues.duration === '') {
+      setDurationError(true);
+    }
+    if (formValues.day === '') {
+      setDayError(true);
+    }
+
+    if (
+      formValues.description && 
+      formValues.owner &&
+      formValues.duration &&
+      formValues.day
+    ) {
+        dispatch(createTodo(formValues));
+        window.location.reload();
+        setFormValues(initialValues)
+      }
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +147,10 @@ const InputDialog = () => {
       <DialogTitle>Input New Todo</DialogTitle>
       <DialogContent>
           
-      <form onSubmit={onSubmitForm}>
+      <form 
+        onSubmit={onSubmitForm}
+        noValidate
+      >
         <Grid container alignItems="center" direction="column" >
           <br />
           <TextField
@@ -127,6 +158,8 @@ const InputDialog = () => {
             name="description"
             label="Enter description"
             type="text"
+            required
+            error={descriptionError}
             value={formValues.description}
             onChange={handleInputChange}
           />
@@ -136,6 +169,8 @@ const InputDialog = () => {
             name="owner"
             label="Enter owner"
             type="text"
+            required
+            error={ownerError}
             value={formValues.owner}
             onChange={handleInputChange}
           />
@@ -149,20 +184,20 @@ const InputDialog = () => {
                 row
               >
               <FormControlLabel
-                key="high"
-                value="high"
+                key="High"
+                value="High"
                 control={<Radio size="small" />}
                 label="High"
               />
               <FormControlLabel
-                key="medium"
-                value="medium"
+                key="Medium"
+                value="Medium"
                 control={<Radio size="small" />}
                 label="Medium"
               />
               <FormControlLabel
-                key="low"
-                value="low"
+                key="Low"
+                value="Low"
                 control={<Radio size="small" />}
                 label="Low"
               />
@@ -171,14 +206,16 @@ const InputDialog = () => {
 
           <br />
           <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Day</InputLabel>
+            <FormControl fullWidth required>
+              <InputLabel id="simple-select-label">Day</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={day}
+                labelId="simple-select-label"
+                id="simple-select"
+                value={formValues.day}
                 label="Day"
+                error={dayError}
                 onChange={handleChange}
+                required
               >
                 <MenuItem key={"Monday"} value={"Monday"}>Monday</MenuItem>
                 <MenuItem key={"Tuesday"} value={"Tuesday"}>Tuesday</MenuItem>
@@ -227,6 +264,8 @@ const InputDialog = () => {
               name="duration"
               label="Enter duration"
               type="text"
+              required
+              error={durationError}
               sx={{ width: 400 }}
               value={formValues.duration}
               onChange={handleInputChange}
