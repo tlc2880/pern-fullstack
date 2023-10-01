@@ -107,7 +107,7 @@ const EditTodo = ( {todo}: EditTodoProps ) => {
       </IconButton>
       <DialogTitle>Edit Todo</DialogTitle>
       <DialogContent>
-      <form onSubmit={() => handleEdit(todo)}>
+      <form noValidate onSubmit={() => handleEdit(todo)}>
       <Grid container alignItems="center" direction="column">
         <TextField
           autoFocus

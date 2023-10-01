@@ -32,9 +32,10 @@ import todoType from '../../types'
 export default function InputStepperDialog() {
   const [ open, setOpen ] = useState(false);
   const [ descriptionError, setDescriptionError ] = useState(false);
+  const [ ownerError, setOwnerError ] = useState(false);
+  const [ dayError, setDayError ] = useState(false);
   const [ durationError, setDurationError ] = useState(false);
   const [ activeStep, setActiveStep ] = useState(0);
-  const [ day, setDay ] = useState("");
   const [ time, setTime ] = useState({
     morning: false,
     afternoon: false,
@@ -77,16 +78,27 @@ export default function InputStepperDialog() {
   const onSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     setDescriptionError(false);
+    setOwnerError(false);
+    setDayError(false);
     setDurationError(false);
-
+    
     if (formValues.description === '') {
       setDescriptionError(true);
+    }
+    if (formValues.owner === '') {
+      setOwnerError(true);
+    }
+    if (formValues.day === '') {
+      setDayError(true);
     }
     if (formValues.duration === '') {
       setDurationError(true);
     }
+
     if (
-      formValues.description &&
+      formValues.description && 
+      formValues.owner &&
+      formValues.day &&
       formValues.duration
     ) {
         dispatch(createTodo(formValues));
@@ -96,7 +108,6 @@ export default function InputStepperDialog() {
   };
 
   const handleSelectChange = (event: SelectChangeEvent) => {
-    setDay(event.target.value);
     setFormValues({
       ...formValues,
       // eslint-disable-next-line 
@@ -147,7 +158,7 @@ export default function InputStepperDialog() {
         <CloseIcon />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Todo Stepper Input</DialogTitle>
+        <DialogTitle>New Todo Linear Stepper Input</DialogTitle>
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
@@ -175,7 +186,6 @@ export default function InputStepperDialog() {
                   fullWidth
                   required
                   error={descriptionError}
-                  
                 />
                 <br />
                 <br />
@@ -194,6 +204,8 @@ export default function InputStepperDialog() {
                   onChange={handleInputChange}
                   fullWidth
                   margin="normal"
+                  required
+                  error={ownerError}
                 />
                 <br />
                 <br />
@@ -241,16 +253,18 @@ export default function InputStepperDialog() {
               <>
                 <Typography variant="h6">Step 4</Typography>
                   <br />
-                  <FormControl sx={{ m: 1, minWidth: 400 }}>
+                  <FormControl required sx={{ m: 1, minWidth: 400 }}>
                     <InputLabel id="simple-select-label">
                       Day
                     </InputLabel>
                     <Select
                       labelId="simple-select-label"
                       id="simple-select"
-                      value={day}
+                      value={formValues.day}
                       label="Day"
                       onChange={handleSelectChange}
+                      required
+                      error={dayError}
                     >
                     <MenuItem key={"Monday"} value={"Monday"}>
                       Monday
@@ -361,7 +375,6 @@ export default function InputStepperDialog() {
                   <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
                     Day: {formValues.day}
                   </Typography> 
-                  
                   <Typography variant="subtitle1" sx={{ display: 'inline-block' }}>
                     Time Range: {formValues.morning? 'Morning, ': ''} 
                       {formValues.afternoon? 'Afternoon, ': ''} 
