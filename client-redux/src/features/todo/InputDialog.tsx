@@ -106,7 +106,7 @@ const InputDialog = () => {
     ) {
         dispatch(createTodo(formValues));
         window.location.reload();
-        setFormValues(initialValues)
+        setFormValues(initialValues);
       }
   };
 
