@@ -19,7 +19,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
-          <h1 className="input-header" >PERN using Redux Toolkit with Async Thunk, MUI, & Styled Table</h1>
+          <h1 className="input-header" >PERN using Redux Toolkit with Async Thunk, MUI, Styled Table, & Stepper Inputs</h1>
           <div className="container">
             <InputDialog />
             <InputStepperDialog />
