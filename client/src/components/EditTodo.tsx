@@ -106,7 +106,7 @@ const EditTodo = ( {todo} : EditTodoProps) => {
         </IconButton>
         <DialogTitle>Edit Todo</DialogTitle>
         <DialogContent>
-        <form onSubmit={updateTodo}>
+        <form noValidate onSubmit={updateTodo}>
         <Grid container alignItems="center" direction="column" >
           <TextField
             autoFocus
@@ -141,20 +141,20 @@ const EditTodo = ( {todo} : EditTodoProps) => {
                 row
               >
               <FormControlLabel
-                key="low"
-                value="low"
+                key="Low"
+                value="Low"
                 control={<Radio size="small" />}
                 label="Low"
               />
               <FormControlLabel
-                key="medium"
-                value="medium"
+                key="Medium"
+                value="Medium"
                 control={<Radio size="small" />}
                 label="Medium"
               />
               <FormControlLabel
-                key="high"
-                value="high"
+                key="High"
+                value="High"
                 control={<Radio size="small" />}
                 label="High"
               />
