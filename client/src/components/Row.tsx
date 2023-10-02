@@ -8,8 +8,8 @@ import {
     TableHead,
     Typography,
     Collapse,
+    IconButton
   } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
