@@ -32,9 +32,60 @@
   color: #61dafb;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --HEADER-BG: #333;
+  --HEADER-COLOR: whitesmoke;
+  --HOME-BG: #whitesmoke;
+  --ADMIN-BG: #333;
+}
+
+body { 
+  min-height: 100vh; 
+  font-family: 'Poppins', sans-serif;
+}
+
+#root, main {
+  min-height: 100vh;
+}
+
+main {
+  place-content: center;
+  padding: 1rem;
+}
+
+header {
+  background-color: var(--HEADER-BG);
+  color: var(--HEADER-COLOR);
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+  z-index: 1;
+}
+
+.home {
+  background-color: var(--HOME-BG);
+  text-align: center;
+}
+
+.admin {
+  background-color: var(--ADMIN-BG);
+}
+
+.admin p {
+  margin-bottom: 1rem;
+}
+
 .container { 
   display: flex; 
-} 
+}
 
 @keyframes App-logo-spin {
   from {
