@@ -6,6 +6,7 @@ type PostProps = {
 }
 
 const Post = ({ post, user }: PostProps) => {
+  // if (user.id === 2) throw new Error('Error #2') // this used for testing
   return (
       <article className="post">
           <h2>{post.title}</h2>
