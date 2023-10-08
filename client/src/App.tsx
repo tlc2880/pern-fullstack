@@ -5,6 +5,8 @@ import InputStepperDialog from "./components/todos/InputStepperDialog";
 import ListTodos from "./components/todos/ListTodos";
 import Container from "@mui/material/Container";
 import SusApp from './components/suspense/SusApp';
+import IMAGE from './react.png';
+import LOGO from './React.svg';
 import "./App.css";
 
 const darkTheme = createTheme({
@@ -19,7 +21,11 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container maxWidth="xl">
-			    <h1 className="input-header" >PERN using MUI, Styled Table, Stepper Inputs, & Webpack</h1>
+          <h1>
+            <img src={IMAGE} alt="React Logo" width="30" height="30"/>
+            PERN, MUI, Styled Table, & Webpack - {process.env.NODE_ENV}
+            <img src={LOGO} alt="React Logo" width="30"/>
+          </h1>
           <div className="container">
             <InputDialog />
             <InputStepperDialog />
