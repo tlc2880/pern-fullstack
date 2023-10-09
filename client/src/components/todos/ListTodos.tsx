@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { 
+import React, { useEffect, useState, MouseEvent } from 'react'
+import {
   Table,
   TableBody,
   TableCell,
@@ -8,93 +8,92 @@ import {
   TableFooter,
   TablePagination,
   Paper,
-  TableSortLabel
-} from "@mui/material";
-import todoType, { ToDoContainer } from '../types'
-import TablePaginationActions from './TablePaginationActions';
-import Row from './Row';
-import { StyledTableCell, StyledTableRow } from './StyledTable';
+  TableSortLabel,
+} from '@mui/material'
+import todoType, { ToDoContainer } from './types'
+import TablePaginationActions from './TablePaginationActions'
+import Row from './Row'
+import { StyledTableCell, StyledTableRow } from './StyledTable'
 
 const ListTodos = () => {
-  const [todos, setTodos] = useState<ToDoContainer>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(6);
+  const [todos, setTodos] = useState<ToDoContainer>([])
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(6)
 
   const getTodos = async () => {
     try {
-      const response = await fetch("http://localhost:5000/todos");
-      const jsonData = await response.json();
-      setTodos(jsonData);
+      const response = await fetch('http://localhost:5000/todos')
+      const jsonData = await response.json()
+      setTodos(jsonData)
     } catch (error: any) {
-      console.error(error.message);
+      console.error(error.message)
     }
-  };
+  }
 
   useEffect(() => {
-    getTodos();
-  }, []);
+    getTodos()
+  }, [])
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - todos.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - todos.length) : 0
 
   const handleChangePage = (
-    // @ts-ignore
     event: MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
-  type orderType = "asc" | "desc";
+  type orderType = 'asc' | 'desc'
 
-  const [orderDirection, setOrderDirection] = useState<orderType>("asc");
+  const [orderDirection, setOrderDirection] = useState<orderType>('asc')
 
   const sortAlphaArray = (arr: todoType[], orderBy: orderType) => {
     const sortedData = [...arr].sort((a, b) => {
       if (orderBy === 'asc') {
-        return a.owner.localeCompare(b.owner);
+        return a.owner.localeCompare(b.owner)
       } else {
-        return b.owner.localeCompare(a.owner);
+        return b.owner.localeCompare(a.owner)
       }
-    });
-    return sortedData;
+    })
+    return sortedData
   }
 
   const handleAlphaSort = () => {
-    setTodos(sortAlphaArray(todos, orderDirection));
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+    setTodos(sortAlphaArray(todos, orderDirection))
+    setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc')
   }
 
   const sortNumberArray = (arr: todoType[], orderBy: orderType) => {
     switch (orderBy) {
-      case "asc":
+      case 'asc':
       default:
         return arr.sort((a: todoType, b: todoType) =>
           a.todo_id > b.todo_id ? 1 : b.todo_id > a.todo_id ? -1 : 0
-        );
-      case "desc":
+        )
+      case 'desc':
         return arr.sort((a: todoType, b: todoType) =>
           a.todo_id < b.todo_id ? 1 : b.todo_id < a.todo_id ? -1 : 0
-        );
+        )
     }
-  };
+  }
 
   const handleNumberSort = () => {
-    setTodos(sortNumberArray(todos, orderDirection));
-    setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
-  };
+    setTodos(sortNumberArray(todos, orderDirection))
+    setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc')
+  }
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ width: "100%" }} aria-label="custom pagination table">
+      <Table sx={{ width: '100%' }} aria-label="custom pagination table">
         <TableHead>
           <StyledTableRow>
             <StyledTableCell align="right" onClick={handleNumberSort}>
@@ -120,7 +119,12 @@ const ListTodos = () => {
             ? todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : todos
           ).map((row: todoType) => (
-            <Row key={row.todo_id} row={row} setTodos={setTodos} todos={todos}/>
+            <Row
+              key={row.todo_id}
+              row={row}
+              setTodos={setTodos}
+              todos={todos}
+            />
           ))}
           {emptyRows > 0 && (
             <StyledTableRow style={{ height: 53 * emptyRows }}>
@@ -150,7 +154,7 @@ const ListTodos = () => {
         </TableFooter>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}
 
-export default ListTodos;
+export default ListTodos
