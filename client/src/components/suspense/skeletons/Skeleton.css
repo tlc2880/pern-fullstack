@@ -4,7 +4,7 @@
   border-radius: 0.25rem;
 }
 
-.skeleton.title { 
+.skeleton.title {
   height: 1.25rem;
   margin-bottom: 1rem;
 }
@@ -30,7 +30,7 @@
 /* animation */
 @keyframes pulse {
   50% {
-      opacity: .5;
+    opacity: 0.5;
   }
 }
 
